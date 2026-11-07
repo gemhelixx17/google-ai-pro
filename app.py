@@ -6,7 +6,7 @@ import shutil
 import subprocess
 import time
 from typing import Dict, Any, List, Optional
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
 from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
@@ -52,6 +52,20 @@ def save_config(cfg: Dict[str, Any]):
         json.dump(cfg, f, ensure_ascii=False, indent=2)
 
 
+def load_i18n(lang: str = "zh-CN") -> Dict[str, Any]:
+    """Load i18n translations for language"""
+    lang_map = {"zh-CN": "i18n_zh.json", "zh": "i18n_zh.json", "en": "i18n_en.json", "en-US": "i18n_en.json", "id": "i18n_id.json", "in": "i18n_id.json"}
+    filename = lang_map.get(lang, "i18n_zh.json")
+    path = os.path.join(BASE_DIR, filename)
+    if not os.path.exists(path):
+        return {"lang": lang}
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return {"lang": lang}
+
+
 def append_log(line: str):
     print(line, flush=True)
     LOGS.append(line)
@@ -90,6 +104,12 @@ async def index():
     html_path = os.path.join(TEMPLATES_DIR, "index.html")
     with open(html_path, "r", encoding="utf-8") as f:
         return f.read()
+
+
+@app.get("/api/i18n")
+async def get_i18n(lang: str = Query("zh-CN")):
+    """Get i18n translations for specified language"""
+    return load_i18n(lang)
 
 
 @app.get("/api/state")

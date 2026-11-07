@@ -386,6 +386,11 @@
       <p>支持普通白号 / 2FA 号（自动填号密 + 辅助邮箱 / 2FA 验证码），全自动完成：登录验证 ➔ 首层 12M 免费 ($0) ➔ 二层 6M 免费叠加 ($0) ➔ 三层 6M 免费封顶 24个月 ($0) ➔ Play 自动退订锁死</p>
     </div>
     <div class="header-actions">
+      <select id="langSelect" onchange="setLanguage(this.value)" style="margin-right: 10px;">
+        <option value="zh-CN">中文 (简体)</option>
+        <option value="en">English</option>
+        <option value="id">Bahasa Indonesia</option>
+      </select>
       <select id="batchStartStep" title="批量执行的起始步骤">
         <option value="1">从 Step 1 开始 (全流程零成本叠满2年 + 退订)</option>
         <option value="2">从 Step 2 开始 (已登录，直接跑三层 $0 叠加)</option>
@@ -561,10 +566,32 @@
   </div>
 
   <script>
+    let i18n = {};
+    let currentLang = localStorage.getItem('app_lang') || 'zh-CN';
     let configInitialized = false;
     let selectedStartSteps = {};
     let copiedAccountMap = {};
     let openedBrowserMap = {};
+
+    function t(key, defaults = '') {
+      return i18n[key] || defaults;
+    }
+
+    async function loadI18n(lang) {
+      try {
+        const res = await fetch(`/api/i18n?lang=${lang}`);
+        i18n = await res.json();
+        localStorage.setItem('app_lang', lang);
+        currentLang = lang;
+      } catch (e) {
+        console.error('i18n load error:', e);
+      }
+    }
+
+    async function setLanguage(lang) {
+      await loadI18n(lang);
+      location.reload();
+    }
 
     async function fetchState() {
       try {
@@ -594,8 +621,8 @@
         const total = (data.accounts || []).length;
         const done = (data.accounts || []).filter(a => a.status === 'completed').length;
         const running = data.active_count || 0;
-        document.getElementById('summaryStats').textContent =
-          `共 ${total} 个账号 | 已完成: ${done} | 运行中: ${running}`;
+        document.getElementById('summaryStats').textContent = t('summary_stats', `共 ${total} 个账号 | 已完成: ${done} | 运行中: ${running}`)
+          .replace('{{total}}', total).replace('{{done}}', done).replace('{{running}}', running);
       } catch (e) {
         console.error('State poll error:', e);
       }
@@ -603,12 +630,12 @@
 
     function statusBadgeHtml(status) {
       const map = {
-        pending: ['status-pending', '⏳ 待执行'],
-        running: ['status-running', '⚡ 执行中'],
-        waiting_human: ['status-waiting_human', '🖐️ 等点人机验证'],
-        completed: ['status-completed', '✅ 已完成'],
-        error: ['status-error', '❌ 异常中断'],
-        stopped: ['status-pending', '⏹ 已停止']
+        pending: ['status-pending', t('status_pending', '⏳ 待执行')],
+        running: ['status-running', t('status_running', '⚡ 执行中')],
+        waiting_human: ['status-waiting_human', t('status_waiting', '🖐️ 等点人机验证')],
+        completed: ['status-completed', t('status_completed', '✅ 已完成')],
+        error: ['status-error', t('status_error', '❌ 异常中断')],
+        stopped: ['status-pending', t('status_stopped', '⏹ 已停止')]
       };
       const [cls, label] = map[status] || ['status-pending', status];
       return `<span class="status-badge ${cls}">${label}</span>`;
@@ -631,15 +658,15 @@
       tbody.innerHTML = accounts.map(acc => {
         const savedStart = selectedStartSteps[acc.id] || 1;
         const shotBtn = acc.last_screenshot
-          ? `<button class="btn-sm btn-secondary" onclick="showScreenshot('${acc.id}', '${acc.last_screenshot}')">🖼 查看</button>`
-          : `<span style="color:var(--muted);font-size:12px;">-</span>`;
+          ? `<button class="btn-sm btn-secondary" onclick="showScreenshot('${acc.id}', '${acc.last_screenshot}')">${t('btn_screenshot', '🖼 查看')}</button>`
+          : `<span style="color:var(--muted);font-size:12px;">${t('modal_screenshot', '-')}</span>`;
 
         const totpHtml = (acc.totp_secret && acc.totp_now && acc.totp_now !== '------')
-          ? `<div class="totp-pill" onclick="copyText('${acc.totp_now}')" title="点击复制 6 位动态验证码">
+          ? `<div class="totp-pill" onclick="copyText('${acc.totp_now}')" title="${t('totp_hint', '点击复制 6 位动态验证码')}">
                <span>${acc.totp_now}</span>
                <span class="totp-rem">${acc.totp_rem}s</span>
              </div>`
-          : `<span style="font-size:12px; color:#34d399;">📧 辅助邮箱验证</span>`;
+          : `<span style="font-size:12px; color:#34d399;">${t('auth_email', '📧 辅助邮箱验证')}</span>`;
 
         return `
           <tr>
@@ -647,9 +674,9 @@
             <td>
               <div style="font-weight:600; color:#f1f5f9;">${acc.email}</div>
               <div style="font-size:11.5px; color:var(--muted); font-family:Consolas,monospace;">
-                密码: ${acc.password}
-                ${acc.recovery_email ? `<br/>辅助: ${acc.recovery_email}` : ''}
-                ${acc.ip_info ? `<span style="margin-left:6px; color:#38bdf8;">[${acc.ip_info}]</span>` : (acc.proxy ? `<span style="margin-left:6px; color:#a78bfa;">[独立代理]</span>` : '')}
+                ${t('password_label', '密码:')}: ${acc.password}
+                ${acc.recovery_email ? `<br/>${t('recovery_label', '辅助:')}: ${acc.recovery_email}` : ''}
+                ${acc.ip_info ? `<span style="margin-left:6px; color:#38bdf8;">[${acc.ip_info}]</span>` : (acc.proxy ? `<span style="margin-left:6px; color:#a78bfa;">${t('proxy_label', '[独立代理]')}</span>` : '')}
               </div>
             </td>
             <td>${totpHtml}</td>
@@ -670,37 +697,37 @@
                   style="padding:4px 6px; font-size:12px;"
                   onchange="selectedStartSteps['${acc.id}'] = parseInt(this.value)"
                 >
-                  <option value="1" ${savedStart === 1 ? 'selected' : ''}>从 Step 1 全跑</option>
-                  <option value="2" ${savedStart === 2 ? 'selected' : ''}>从 Step 2 首层12M($0)</option>
-                  <option value="3" ${savedStart === 3 ? 'selected' : ''}>从 Step 3 二层6M($0)</option>
-                  <option value="4" ${savedStart === 4 ? 'selected' : ''}>从 Step 4 三层封顶($0)</option>
-                  <option value="5" ${savedStart === 5 ? 'selected' : ''}>从 Step 5 退订锁死</option>
+                  <option value="1" ${savedStart === 1 ? 'selected' : ''}>${t('select_step1', '从 Step 1 全跑')}</option>
+                  <option value="2" ${savedStart === 2 ? 'selected' : ''}>${t('select_step2', '从 Step 2 首层12M($0)')}</option>
+                  <option value="3" ${savedStart === 3 ? 'selected' : ''}>${t('select_step3', '从 Step 3 二层6M($0)')}</option>
+                  <option value="4" ${savedStart === 4 ? 'selected' : ''}>${t('select_step4', '从 Step 4 三层封顶($0)')}</option>
+                  <option value="5" ${savedStart === 5 ? 'selected' : ''}>${t('select_step5', '从 Step 5 退订锁死')}</option>
                 </select>
                 <button
                   class="btn-sm ${acc.is_running ? 'btn-danger' : 'btn-success'}"
                   onclick="${acc.is_running ? `stopSingle('${acc.id}')` : `runSingle('${acc.id}')`}"
                 >
-                  ${acc.is_running ? '⏹ 停止' : '▶ 启动一条龙'}
+                  ${acc.is_running ? t('btn_stop_single', '⏹ 停止') : t('btn_run', '▶ 启动一条龙')}
                 </button>
                 <button
                   class="btn-sm ${openedBrowserMap[acc.id] ? 'btn-success' : 'btn-secondary'}"
                   onclick="openBrowser('${acc.id}')"
-                  title="手动打开该账号的独立 Chrome 窗口"
+                  title="${t('btn_browser', '🌐 浏览器')}"
                 >
-                  ${openedBrowserMap[acc.id] ? '✅ 已打开' : '🌐 浏览器'}
+                  ${openedBrowserMap[acc.id] ? t('btn_browser_opened', '✅ 已打开') : t('btn_browser', '🌐 浏览器')}
                 </button>
-                <button class="btn-sm btn-secondary" onclick="resetAccount('${acc.id}')" title="重置状态为待执行">
-                  🔄
+                <button class="btn-sm btn-secondary" onclick="resetAccount('${acc.id}')" title="${t('btn_reset', '🔄')}">
+                  ${t('btn_reset', '🔄')}
                 </button>
-                <button class="btn-sm btn-secondary" onclick="deleteAccount('${acc.id}')" title="移除此账号">
-                  🗑️
+                <button class="btn-sm btn-secondary" onclick="deleteAccount('${acc.id}')" title="${t('btn_delete', '🗑️')}">
+                  ${t('btn_delete', '🗑️')}
                 </button>
                 <button
                   class="btn-sm ${copiedAccountMap[acc.id] ? 'btn-success' : 'btn-secondary'}"
                   onclick="copyAccountFull('${acc.id}', '${acc.email}', '${acc.password}', '${acc.totp_secret || acc.recovery_email || ''}')"
-                  title="一键复制账号信息"
+                  title="${t('btn_copy', '📋 复制')}"
                 >
-                  ${copiedAccountMap[acc.id] ? '✅ 已复制' : '📋 复制'}
+                  ${copiedAccountMap[acc.id] ? t('btn_copy_done', '✅ 已复制') : t('btn_copy', '📋 复制')}
                 </button>
               </div>
             </td>
@@ -738,9 +765,9 @@
       const btn = document.getElementById('btnTestProxy');
       const resBox = document.getElementById('proxyTestResult');
       btn.disabled = true;
-      btn.textContent = '⏳ 正在检测出口 IP...';
+      btn.textContent = t('proxy_testing', '⏳ 正在检测出口 IP...');
       resBox.style.color = '#38bdf8';
-      resBox.textContent = '正在测试代理连通性...';
+      resBox.textContent = t('proxy_testing_msg', '正在测试代理连通性...');
       try {
         const region = document.getElementById('cfgTargetRegion').value;
         const tpl = document.getElementById('cfgProxyTemplate').value.trim();
@@ -759,10 +786,10 @@
         }
       } catch (e) {
         resBox.style.color = '#f87171';
-        resBox.textContent = '❌ 请求异常: ' + e;
+        resBox.textContent = '❌ ' + t('alert_request_error', '请求异常:') + ' ' + e;
       } finally {
         btn.disabled = false;
-        btn.textContent = '🔍 测试代理连通性';
+        btn.textContent = t('btn_test_proxy', '🔍 测试代理连通性');
         fetchState();
       }
     }
@@ -796,7 +823,7 @@
 
     async function importAccounts() {
       const raw = document.getElementById('importText').value.trim();
-      if (!raw) return alert('请先在文本框中粘贴要导入的账号！');
+      if (!raw) return alert(t('alert_import_empty', '请先在文本框中粘贴要导入的账号！'));
       const res = await fetch('/api/accounts/import', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -816,7 +843,7 @@
       const expY = document.getElementById('cfgExpYear').value.trim();
       const cvc = document.getElementById('cfgCvc').value.trim();
       if (num.length < 12 || !expM || !expY || !cvc) {
-        alert('⚠️ 请先在左侧【全局配置与内联免税绑卡】中填写您的支付卡信息（卡号、有效期月/年、CVC 安全码）后再开始执行！');
+        alert(t('alert_card_required', '⚠️ 请先在左侧【全局配置与内联免税绑卡】中填写您的支付卡信息（卡号、有效期月/年、CVC 安全码）后再开始执行！'));
         document.getElementById('cfgCardNumber').focus();
         return false;
       }
@@ -834,7 +861,7 @@
       });
       if (!res.ok) {
         const err = await res.json();
-        alert(err.detail || '启动失败');
+        alert(err.detail || t('alert_run_failed', '启动失败'));
       }
       fetchState();
     }
@@ -850,7 +877,7 @@
       });
       if (!res.ok) {
         const err = await res.json();
-        alert(err.detail || '批量启动失败');
+        alert(err.detail || t('alert_batch_failed', '批量启动失败'));
       }
       fetchState();
     }
@@ -893,7 +920,7 @@
     }
 
     async function deleteAccount(accountId) {
-      if (!confirm(`确定要从列表中移除账号 ${accountId} 吗？`)) return;
+      if (!confirm(t('alert_confirm_delete', `确定要从列表中移除账号 ${accountId} 吗？`).replace('{{id}}', accountId))) return;
       await fetch('/api/accounts/delete', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -903,7 +930,8 @@
     }
 
     function showScreenshot(accId, filename) {
-      document.getElementById('modalTitle').textContent = `${accId} 最新核验截图 (${filename})`;
+      document.getElementById('modalTitle').textContent = t('modal_title_screenshot', `${accId} 最新核验截图 (${filename})`)
+        .replace('{{id}}', accId).replace('{{filename}}', filename);
       document.getElementById('modalImg').src = `/screenshots/${filename}?t=${Date.now()}`;
       document.getElementById('imgModal').style.display = 'flex';
     }
@@ -927,8 +955,12 @@
       }, 2000);
     }
 
-    fetchState();
-    setInterval(fetchState, 1500);
+    (async () => {
+      await loadI18n(currentLang);
+      document.getElementById('langSelect').value = currentLang;
+      fetchState();
+      setInterval(fetchState, 1500);
+    })();
   </script>
 </body>
 </html>
