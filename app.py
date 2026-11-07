@@ -54,8 +54,8 @@ def save_config(cfg: Dict[str, Any]):
 
 def load_i18n(lang: str = "zh-CN") -> Dict[str, Any]:
     """Load i18n translations for language"""
-    lang_map = {"zh-CN": "i18n_zh.json", "zh": "i18n_zh.json", "en": "i18n_en.json", "en-US": "i18n_en.json", "id": "i18n_id.json", "in": "i18n_id.json"}
-    filename = lang_map.get(lang, "i18n_zh.json")
+    lang_map = {"zh-CN": "i18n_zh_cn.json", "zh": "i18n_zh_cn.json", "en": "i18n_en_us.json", "en-US": "i18n_en_us.json", "id": "i18n_id_id.json", "in": "i18n_id_id.json"}
+    filename = lang_map.get(lang, "i18n_zh_cn.json")
     path = os.path.join(BASE_DIR, filename)
     if not os.path.exists(path):
         return {"lang": lang}

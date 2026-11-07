@@ -1,50 +1,139 @@
 ========================================================================  
-  Google AI Pro (5 TB) 零成本两年 (US$0.00 -> 24个月) 全自动控制台  
+Google AI Pro (5 TB) Zero-Cost 2-Year Full Auto Console  
 ========================================================================  
-  
 
-声明：该项目并非本人开发，仅作为圈内开源供大家分析学习使用  
-Disclaimer: I did not develop this project; it is provided as an open-source resource for the community to analyze and learn from.  
+**Multilingual Support:** 中文 (Chinese) | English | Bahasa Indonesia (Indonesian)
 
-【一、运行环境要求】
-1. Windows 10 / 11 系统
-2. 已安装 Google Chrome 浏览器（默认路径即可）
-3. 已安装 Python 3.10 或更高版本（安装时勾选 Add Python to PATH）
-4. 网络环境：本机开启美区（US）代理，或在控制台左侧填写代理模板
+Disclaimer: This project is provided as open-source for community analysis and learning purposes.
 
-【二、快速启动步骤】
-1. 首次使用请双击运行：【1_首次运行_安装依赖并启动.bat】
-2. 之后日常使用直接双击：【2_启动控制台.bat】
-3. 浏览器会自动打开控制台页面：http://127.0.0.1:8765
+## I. System Requirements
 
-【三、自定义填写支付卡 & 跑号说明】
-1. 填写支付卡（必填）：
-   - 在网页左侧【全局配置与内联免税绑卡】区域，填入你自己的 Visa 或 Mastercard 外币卡：
-     * 卡号（16位数字）
-     * 有效期（月 / 年，如 08 / 29）
-     * 安全码（3位 CVC）
-     * 持卡人英文姓名
-     * 免税邮编默认已填好 97201（美国俄勒冈免税州），无需修改
-   - 填写后点击【💾 保存配置】。
-   - 注：脚本内置严格 0 元消费保护，仅在结账弹窗确认为 US$0.00 时才会点击订阅，全程 0 扣费。
+1. Windows 10 / 11 or Linux/macOS with Python support
+2. Google Chrome browser installed (default path OK)
+3. Python 3.10+ (add to PATH during installation)
+4. Network: US proxy enabled locally, or configure proxy template in console
 
-2. 批量导入 Google 账号：
-   - 在网页右侧【批量放号导入区】粘贴账号（每行一个），支持以下任意格式：
-     * 邮箱----密码----辅助邮箱
-     * 邮箱----密码----辅助邮箱----2FA密钥
-     * 邮箱----密码----2FA密钥
-   - 点击【➕ 一键导入账号列表】。
+## II. Quick Start
 
-3. 开始全自动执行：
-   - 点击单个账号右侧的【▶ 执行】或顶部的【▶ 批量全自动执行】。
-   - 脚本会自动完成：
-     Step 1: 自动登录 Google 并通过辅助邮箱 / 2FA 验证
-     Step 2: 内联免税绑卡 + 首层 12 个月免费包 (US$0.00)
-     Step 3: 叠加二层 6 个月免费包 (US$0.00 -> 18个月)
-     Step 4: 叠加三层 6 个月免费包 (US$0.00 -> 24个月封顶)
-     Step 5: 自动前往 Google Play 取消自动续订，锁死 2 年到期权益并截图验真
+### Option 1: Windows Batch Files
+1. First run: double-click **1_首次运行_安装依赖并启动.bat**
+2. Daily use: double-click **2_启动控制台.bat**
+3. Browser opens automatically: http://127.0.0.1:8765
 
+### Option 2: Manual Python
+```bash
+pip install -r requirements.txt
+python app.py
+# Open http://127.0.0.1:8765
+```
 
-# 卡网：https://faka.cdkey.si
-# 博客：https://blog.caowo.de
-# TG群：@Hello_Florence
+### Language Selection
+- Click language dropdown (top-right) to switch:
+  - 中文 (简体) - Chinese Simplified
+  - English
+  - Bahasa Indonesia
+
+## III. Configuration & Account Setup
+
+### 1. Credit Card Configuration (Required)
+- Navigate to **Global Config & Tax-Free Card Binding** section
+- Enter Visa / Mastercard foreign currency card:
+  * Card number (16 digits)
+  * Expiration (month/year, e.g. 08/29)
+  * Security code (3-digit CVC)
+  * Cardholder English name
+  * Tax-free postal code: 97201 (Oregon, US) — default, no change needed
+- Click **Save Configuration**
+- Note: Built-in strict $0 cost protection; only clicks subscribe when checkout shows US$0.00
+
+### 2. Bulk Import Google Accounts
+- In **Bulk Account Import** section, paste accounts (one per line), supports formats:
+  * email----password----recovery_email
+  * email----password----recovery_email----2FA_key
+  * email----password----2FA_key
+- Click **One-Click Import Account List**
+
+### 3. Fully Automated Execution
+- Click **Start Pipeline** on individual account or **One-Click Run All Pending** at top
+- Automation completes:
+  - **Step 1:** Auto login Google + recovery email / 2FA verification
+  - **Step 2:** Inline tax-free card binding + tier 1 12-month free (US$0.00)
+  - **Step 3:** Stack tier 2 6-month free (US$0.00 → 18 months)
+  - **Step 4:** Stack tier 3 6-month free (US$0.00 → 24 months cap)
+  - **Step 5:** Auto cancel auto-renew on Play Store, lock 2-year expiry + screenshot proof
+
+## IV. Features
+
+- ✅ Full automation: login → verification → multi-tier stacking → unsubscribe lock
+- ✅ Zero-cost protection: validates $0.00 before checkout
+- ✅ Multi-language UI: Chinese / English / Indonesian
+- ✅ Real-time logs & progress monitoring
+- ✅ Batch account processing
+- ✅ Proxy support (HTTP/HTTPS/SOCKS5)
+- ✅ Account status persistence
+
+## V. File Structure
+
+```
+├── app.py                 # FastAPI backend
+├── automation_engine.py   # Playwright automation logic
+├── config.json           # User config & account data
+├── requirements.txt      # Python dependencies
+├── templates/
+│   └── index.html       # Multi-language web UI
+├── i18n_zh.json         # Chinese translations
+├── i18n_en.json         # English translations
+├── i18n_id.json         # Indonesian translations
+└── screenshots/         # Account proof screenshots
+```
+
+## VI. Internationalization (i18n)
+
+All UI text is translatable:
+- **i18n_zh.json** - Chinese Simplified (102 keys)
+- **i18n_en.json** - English (102 keys)
+- **i18n_id.json** - Indonesian (102 keys)
+
+Language preference stored in browser localStorage. Add new languages by:
+1. Creating `i18n_[lang].json` with all 102 keys
+2. Adding option to language selector in `templates/index.html`
+
+## VII. API Endpoints
+
+- `GET /` - Web UI
+- `GET /api/state` - Current state (accounts, logs, config)
+- `GET /api/i18n?lang=zh-CN|en|id` - Get translations
+- `POST /api/config` - Update configuration
+- `POST /api/accounts/import` - Bulk import accounts
+- `POST /api/accounts/delete` - Delete account
+- `POST /api/accounts/reset` - Reset account state
+- `POST /api/run/single` - Run single account
+- `POST /api/run/batch` - Run all pending accounts
+- `POST /api/stop` - Stop execution
+- `POST /api/proxy/test` - Test proxy connectivity
+- `POST /api/open_browser` - Manual browser control
+
+## VIII. Troubleshooting
+
+**Port already in use:**
+```bash
+python app.py --port 9000
+```
+
+**Chrome not found:**
+- Ensure Chrome is installed in default path
+- Or set `CHROME_PATH` environment variable
+
+**Proxy issues:**
+- Test proxy in UI using **Test Proxy Connectivity** button
+- Verify credentials and format
+
+## IX. References
+
+Original project: https://github.com/worldonlyu/Google_AI_Pro_2Year_ZeroCost_Auto
+
+i18n fork: https://github.com/gemhelixx17/google-ai-pro
+
+---
+
+**License:** As per original project terms
