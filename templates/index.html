@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en" id="htmlRoot">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Google AI Ultra (5x / 20x) 全自动一条龙控制台</title>
+  <title id="pageTitle">Google AI Ultra (5x / 20x) 全自动一条龙控制台</title>
   <style>
     :root {
       --bg: #0b0f19;
@@ -380,29 +380,29 @@
   <div class="header">
     <div class="header-left">
       <h1>
-        🚀 Google AI Pro (5 TB) 零成本两年全自动控制台
-        <span class="badge-pro">US$0.00 零消费 · 叠满 24个月 (2028-10) · 自动退订锁死</span>
+        🚀 <span id="headerTitle">Google AI Pro (5 TB) 零成本两年全自动控制台</span>
+        <span class="badge-pro" id="headerBadge">US$0.00 零消费 · 叠满 24个月 (2028-10) · 自动退订锁死</span>
       </h1>
-      <p>支持普通白号 / 2FA 号（自动填号密 + 辅助邮箱 / 2FA 验证码），全自动完成：登录验证 ➔ 首层 12M 免费 ($0) ➔ 二层 6M 免费叠加 ($0) ➔ 三层 6M 免费封顶 24个月 ($0) ➔ Play 自动退订锁死</p>
+      <p id="headerDesc">支持普通白号 / 2FA 号（自动填号密 + 辅助邮箱 / 2FA 验证码），全自动完成：登录验证 ➔ 首层 12M 免费 ($0) ➔ 二层 6M 免费叠加 ($0) ➔ 三层 6M 免费封顶 24个月 ($0) ➔ Play 自动退订锁死</p>
     </div>
     <div class="header-actions">
       <select id="langSelect" onchange="setLanguage(this.value)" style="margin-right: 10px;">
-        <option value="zh-CN">中文 (简体)</option>
         <option value="en">English</option>
+        <option value="zh-CN">中文 (简体)</option>
         <option value="id">Bahasa Indonesia</option>
       </select>
       <select id="batchStartStep" title="批量执行的起始步骤">
-        <option value="1">从 Step 1 开始 (全流程零成本叠满2年 + 退订)</option>
-        <option value="2">从 Step 2 开始 (已登录，直接跑三层 $0 叠加)</option>
-        <option value="3">从 Step 3 开始 (已有12M，继续跑二层+三层 $0 叠加)</option>
-        <option value="4">从 Step 4 开始 (已有18M，跑最后一层封顶24M + 退订)</option>
-        <option value="5">从 Step 5 开始 (仅去 Google Play 取消自动续订)</option>
+        <option value="1" data-i18n="batch_step1">从 Step 1 开始 (全流程零成本叠满2年 + 退订)</option>
+        <option value="2" data-i18n="batch_step2">从 Step 2 开始 (已登录，直接跑三层 $0 叠加)</option>
+        <option value="3" data-i18n="batch_step3">从 Step 3 开始 (已有12M，继续跑二层+三层 $0 叠加)</option>
+        <option value="4" data-i18n="batch_step4">从 Step 4 开始 (已有18M，跑最后一层封顶24M + 退订)</option>
+        <option value="5" data-i18n="batch_step5">从 Step 5 开始 (仅去 Google Play 取消自动续订)</option>
       </select>
       <button class="btn-success" id="btnBatchRun" onclick="runBatch()">
-        ▶ 一键全自动跑所有待执行账号
+        <span id="btnBatchRunText">▶ 一键全自动跑所有待执行账号</span>
       </button>
       <button class="btn-danger" onclick="stopAll()">
-        ⏹ 停止任务
+        <span id="btnStopText">⏹ 停止任务</span>
       </button>
     </div>
   </div>
@@ -410,24 +410,24 @@
   <!-- 5-Step Pipeline Overview -->
   <div class="pipeline-bar">
     <div class="pipe-item">
-      <strong>Step 1 · 登录与过验证</strong>
-      <span>自动填号密 + 辅助邮箱 / 2FA 动态码</span>
+      <strong id="pipe1Title">Step 1 · 登录与过验证</strong>
+      <span id="pipe1Desc">自动填号密 + 辅助邮箱 / 2FA 动态码</span>
     </div>
     <div class="pipe-item">
-      <strong>Step 2 · 首层 12M 免费 ($0)</strong>
-      <span>12M Pro 5TB + YT 试用 (未绑卡自动内联绑卡)</span>
+      <strong id="pipe2Title">Step 2 · 首层 12M 免费 ($0)</strong>
+      <span id="pipe2Desc">12M Pro 5TB + YT 试用 (未绑卡自动内联绑卡)</span>
     </div>
     <div class="pipe-item">
-      <strong>Step 3 · 二层 6M 叠加 ($0)</strong>
-      <span>S25 Pro 6M + YT 试用 Mode 5 顺延至 18个月</span>
+      <strong id="pipe3Title">Step 3 · 二层 6M 叠加 ($0)</strong>
+      <span id="pipe3Desc">S25 Pro 6M + YT 试用 Mode 5 顺延至 18个月</span>
     </div>
     <div class="pipe-item">
-      <strong>Step 4 · 三层 6M 封顶 ($0)</strong>
-      <span>Pixel 6M + YT 试用 Mode 5 叠满 24个月 (2028-10)</span>
+      <strong id="pipe4Title">Step 4 · 三层 6M 封顶 ($0)</strong>
+      <span id="pipe4Desc">Pixel 6M + YT 试用 Mode 5 叠满 24个月 (2028-10)</span>
     </div>
     <div class="pipe-item">
-      <strong>Step 5 · 自动退订锁死</strong>
-      <span>Play 商店取消续订，全程 US$0.00 截图存证</span>
+      <strong id="pipe5Title">Step 5 · 自动退订锁死</strong>
+      <span id="pipe5Desc">Play 商店取消续订，全程 US$0.00 截图存证</span>
     </div>
   </div>
 
@@ -436,47 +436,47 @@
     <!-- Left: Global Plan & Card Config -->
     <div class="card">
       <div class="card-title">
-        <span>⚙️ 全局免税区、零成本两年 Pro 方案与银行卡配置</span>
-        <button class="btn-sm" onclick="saveConfig()">💾 保存配置</button>
+        <span id="cardConfigTitle">⚙️ 全局免税区、零成本两年 Pro 方案与银行卡配置</span>
+        <button class="btn-sm" onclick="saveConfig()" id="btnSaveConfig">💾 保存配置</button>
       </div>
       <div class="form-grid">
         <div class="form-group col-2">
-          <label>🌍 目标地区 / 免税邮编区（零成本叠加两年 Pro 固定走美区免税州 97201）</label>
+          <label id="lblTargetRegion">🌍 目标地区 / 免税邮编区（零成本叠加两年 Pro 固定走美区免税州 97201）</label>
           <select id="cfgTargetRegion" onchange="onRegionChange(this.value)">
-            <option value="US">🇺🇸 美国免税区 (US / USD · 俄勒冈 97201) — US$0.00 零成本叠加两年 Pro (5 TB) 必选</option>
+            <option value="US" id="optRegionUS">🇺🇸 美国免税区 (US / USD · 俄勒冈 97201) — US$0.00 零成本叠加两年 Pro (5 TB) 必选</option>
           </select>
         </div>
         <div class="form-group col-2">
-          <label>🎯 目标执行方案</label>
+          <label id="lblTargetPlan">🎯 目标执行方案</label>
           <select id="cfgTargetPlan">
-            <option value="pro_2year_zero">🎁 零成本叠加两年 Google AI Pro (5 TB) — 全程 US$0.00 叠满 24 个月至 2028-10</option>
+            <option value="pro_2year_zero" id="optPlanZero">🎁 零成本叠加两年 Google AI Pro (5 TB) — 全程 US$0.00 叠满 24 个月至 2028-10</option>
           </select>
         </div>
         <div class="form-group col-2">
-          <label>卡号 (支持 Visa / Mastercard 外币卡，仅用于 $0.00 试用验证)</label>
+          <label id="lblCardNumber">卡号 (支持 Visa / Mastercard 外币卡，仅用于 $0.00 试用验证)</label>
           <input type="text" id="cfgCardNumber" placeholder="请填写您的 Visa / Mastercard 卡号 (16位)" />
         </div>
         <div class="form-group">
-          <label>有效期 (月 / 年)</label>
+          <label id="lblExpiry">有效期 (月 / 年)</label>
           <div style="display:flex; gap:6px;">
             <input type="text" id="cfgExpMonth" placeholder="月 (如 08)" style="width:50%;" />
             <input type="text" id="cfgExpYear" placeholder="年 (如 29)" style="width:50%;" />
           </div>
         </div>
         <div class="form-group">
-          <label>安全码 (CVC)</label>
+          <label id="lblCvc">安全码 (CVC)</label>
           <input type="text" id="cfgCvc" placeholder="3位安全码" />
         </div>
         <div class="form-group">
-          <label>持卡人姓名</label>
+          <label id="lblHolder">持卡人姓名</label>
           <input type="text" id="cfgHolder" placeholder="英文姓名 (如 ZHANG SAN)" />
         </div>
         <div class="form-group col-2">
-          <label>账单地址 (Address Line 1)</label>
+          <label id="lblAddr">账单地址 (Address Line 1)</label>
           <input type="text" id="cfgAddr" placeholder="700 SW 5th Ave" />
         </div>
         <div class="form-group">
-          <label>免税邮编 / 州</label>
+          <label id="lblZip">免税邮编 / 州</label>
           <div style="display:flex; gap:6px;">
             <input type="text" id="cfgZip" placeholder="97201" style="width:45%;" />
             <input type="text" id="cfgProvince" placeholder="OR" style="width:55%;" />
@@ -484,7 +484,7 @@
         </div>
         <div class="form-group col-4">
           <div style="display:flex; justify-content:space-between; align-items:center;">
-            <label>🛡️ 全局代理模板（留空默认直接使用本机当前美区网络；如需使用代理可粘贴）</label>
+            <label id="lblProxyTemplate">🛡️ 全局代理模板（留空默认直接使用本机当前美区网络；如需使用代理可粘贴）</label>
             <button type="button" class="btn-sm btn-secondary" onclick="testProxyNow()" id="btnTestProxy">🔍 测试代理连通性</button>
           </div>
           <input
@@ -499,22 +499,22 @@
       </div>
       <label class="checkbox-row">
         <input type="checkbox" id="cfgAutoCancel" checked />
-        <span>✅ <strong>Step 5 自动取消续订保护</strong>（叠满 24 个月后立即自动前往 Google Play 取消自动续订，锁死 2028 年到期日，全程 US$0.00 零扣费）</span>
+        <span id="chkAutoCancel">✅ <strong>Step 5 自动取消续订保护</strong>（叠满 24 个月后立即自动前往 Google Play 取消自动续订，锁死 2028 年到期日，全程 US$0.00 零扣费）</span>
       </label>
     </div>
 
     <!-- Right: Bulk Account Import -->
     <div class="card" style="display:flex; flex-direction:column;">
       <div class="card-title">
-        <span>📥 批量放号导入区（支持任意分隔符，自动识别辅助邮箱与 2FA 密钥）</span>
-        <button class="btn-sm btn-success" onclick="importAccounts()">➕ 一键导入账号列表</button>
+        <span id="cardImportTitle">📥 批量放号导入区（支持任意分隔符，自动识别辅助邮箱与 2FA 密钥）</span>
+        <button class="btn-sm btn-success" onclick="importAccounts()" id="btnImport">➕ 一键导入账号列表</button>
       </div>
       <textarea
         id="importText"
         style="flex:1; width:100%; resize:none; font-family:Consolas,monospace; font-size:12.5px;"
         placeholder="每行放一个账号，支持 ----、/、—、|、空格 等任意分隔符：&#10;邮箱----密码----辅助邮箱&#10;邮箱/密码/辅助邮箱/2FA密钥&#10;邮箱—密码—辅助邮箱&#10;邮箱----密码----2FA密钥"
       ></textarea>
-      <div style="font-size:12px; color:var(--muted); margin-top:8px;">
+      <div style="font-size:12px; color:var(--muted); margin-top:8px;" id="importHint">
         💡 提示：无 2FA 白号（带辅助邮箱）与 2FA 号均可直接导入一键全自动执行！
       </div>
     </div>
@@ -523,21 +523,21 @@
   <!-- Accounts Table Card -->
   <div class="card" style="margin-bottom: 18px;">
     <div class="card-title">
-      <span>📋 账号队列与实时进度监控（点击 2FA 动态码可一键复制）</span>
+      <span id="cardAccountsTitle">📋 账号队列与实时进度监控（点击 2FA 动态码可一键复制）</span>
       <span id="summaryStats" style="font-size:12.5px; color:var(--muted); font-weight:normal;">加载中...</span>
     </div>
     <div class="table-wrap">
       <table>
         <thead>
           <tr>
-            <th style="width:85px;">编号</th>
-            <th style="width:250px;">Google 邮箱 / 密码 / 辅助邮箱</th>
-            <th style="width:140px;">验证方式 / 2FA</th>
-            <th style="width:110px;">状态</th>
-            <th style="width:320px;">5 步零成本两年 Pro 流水线进度</th>
-            <th style="width:155px;">当前到期日</th>
-            <th style="width:75px;">核验图</th>
-            <th>单号控制操作</th>
+            <th style="width:85px;" id="thId">编号</th>
+            <th style="width:250px;" id="thEmail">Google 邮箱 / 密码 / 辅助邮箱</th>
+            <th style="width:140px;" id="thAuth">验证方式 / 2FA</th>
+            <th style="width:110px;" id="thStatus">状态</th>
+            <th style="width:320px;" id="thProgress">5 步零成本两年 Pro 流水线进度</th>
+            <th style="width:155px;" id="thExpiry">当前到期日</th>
+            <th style="width:75px;" id="thScreenshot">核验图</th>
+            <th id="thActions">单号控制操作</th>
           </tr>
         </thead>
         <tbody id="accountsTbody"></tbody>
@@ -548,8 +548,8 @@
   <!-- Live Logs Terminal -->
   <div class="card">
     <div class="card-title">
-      <span>🖥️ 实时自动化执行日志 (Playwright CDP + Ngbm Interceptor)</span>
-      <span style="font-size:12px; color:var(--muted); font-weight:normal;">遇到绑卡 reCAPTCHA 人机验证时会自动弹窗提醒您点一下复选框，点完自动继续</span>
+      <span id="cardLogsTitle">🖥️ 实时自动化执行日志 (Playwright CDP + Ngbm Interceptor)</span>
+      <span style="font-size:12px; color:var(--muted); font-weight:normal;" id="logsHint">遇到绑卡 reCAPTCHA 人机验证时会自动弹窗提醒您点一下复选框，点完自动继续</span>
     </div>
     <div class="terminal" id="logTerminal"></div>
   </div>
@@ -559,7 +559,7 @@
     <div class="modal-box" onclick="event.stopPropagation()">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
         <strong id="modalTitle">核验截图预览</strong>
-        <button class="btn-sm btn-secondary" onclick="closeModal()">✖ 关闭</button>
+        <button class="btn-sm btn-secondary" onclick="closeModal()" id="btnModalClose">✖ 关闭</button>
       </div>
       <img id="modalImg" src="" alt="screenshot" />
     </div>
@@ -567,7 +567,7 @@
 
   <script>
     let i18n = {};
-    let currentLang = localStorage.getItem('app_lang') || 'zh-CN';
+    let currentLang = localStorage.getItem('app_lang') || 'en';
     let configInitialized = false;
     let selectedStartSteps = {};
     let copiedAccountMap = {};
@@ -583,6 +583,7 @@
         i18n = await res.json();
         localStorage.setItem('app_lang', lang);
         currentLang = lang;
+        document.getElementById('htmlRoot').lang = lang;
       } catch (e) {
         console.error('i18n load error:', e);
       }
@@ -590,7 +591,14 @@
 
     async function setLanguage(lang) {
       await loadI18n(lang);
-      location.reload();
+      renderPage();
+    }
+
+    function renderPage() {
+      updatePageText();
+      document.getElementById('langSelect').value = currentLang;
+      renderAccounts(window._currentAccounts || []);
+      renderLogs(window._currentLogs || []);
     }
 
     async function fetchState() {
@@ -615,8 +623,10 @@
           configInitialized = true;
         }
 
-        renderAccounts(data.accounts || []);
-        renderLogs(data.logs || []);
+        window._currentAccounts = data.accounts || [];
+        window._currentLogs = data.logs || [];
+        renderAccounts(window._currentAccounts);
+        renderLogs(window._currentLogs);
 
         const total = (data.accounts || []).length;
         const done = (data.accounts || []).filter(a => a.status === 'completed').length;
@@ -958,9 +968,56 @@
     (async () => {
       await loadI18n(currentLang);
       document.getElementById('langSelect').value = currentLang;
+      updatePageText();
       fetchState();
       setInterval(fetchState, 1500);
     })();
+
+    function updatePageText() {
+      document.getElementById('pageTitle').textContent = t('page_title', 'Google AI Ultra (5x / 20x) 全自动一条龙控制台');
+      document.getElementById('headerTitle').textContent = t('header_title', 'Google AI Pro (5 TB) 零成本两年全自动控制台');
+      document.getElementById('headerBadge').textContent = t('header_badge', 'US$0.00 零消费 · 叠满 24个月 (2028-10) · 自动退订锁死');
+      document.getElementById('headerDesc').textContent = t('header_desc', '支持普通白号 / 2FA 号（自动填号密 + 辅助邮箱 / 2FA 验证码），全自动完成：登录验证 ➔ 首层 12M 免费 ($0) ➔ 二层 6M 免费叠加 ($0) ➔ 三层 6M 免费封顶 24个月 ($0) ➔ Play 自动退订锁死');
+      document.getElementById('pipe1Title').textContent = t('pipe1_title', 'Step 1 · 登录与过验证');
+      document.getElementById('pipe1Desc').textContent = t('pipe1_desc', '自动填号密 + 辅助邮箱 / 2FA 动态码');
+      document.getElementById('pipe2Title').textContent = t('pipe2_title', 'Step 2 · 首层 12M 免费 ($0)');
+      document.getElementById('pipe2Desc').textContent = t('pipe2_desc', '12M Pro 5TB + YT 试用 (未绑卡自动内联绑卡)');
+      document.getElementById('pipe3Title').textContent = t('pipe3_title', 'Step 3 · 二层 6M 叠加 ($0)');
+      document.getElementById('pipe3Desc').textContent = t('pipe3_desc', 'S25 Pro 6M + YT 试用 Mode 5 顺延至 18个月');
+      document.getElementById('pipe4Title').textContent = t('pipe4_title', 'Step 4 · 三层 6M 封顶 ($0)');
+      document.getElementById('pipe4Desc').textContent = t('pipe4_desc', 'Pixel 6M + YT 试用 Mode 5 叠满 24个月 (2028-10)');
+      document.getElementById('pipe5Title').textContent = t('pipe5_title', 'Step 5 · 自动退订锁死');
+      document.getElementById('pipe5Desc').textContent = t('pipe5_desc', 'Play 商店取消续订，全程 US$0.00 截图存证');
+      document.getElementById('cardConfigTitle').textContent = t('card_config_title', '⚙️ 全局免税区、零成本两年 Pro 方案与银行卡配置');
+      document.getElementById('btnSaveConfig').textContent = t('btn_save_config', '💾 保存配置');
+      document.getElementById('lblTargetRegion').textContent = t('lbl_target_region', '🌍 目标地区 / 免税邮编区（零成本叠加两年 Pro 固定走美区免税州 97201）');
+      document.getElementById('lblTargetPlan').textContent = t('lbl_target_plan', '🎯 目标执行方案');
+      document.getElementById('lblCardNumber').textContent = t('lbl_card_number', '卡号 (支持 Visa / Mastercard 外币卡，仅用于 $0.00 试用验证)');
+      document.getElementById('lblExpiry').textContent = t('lbl_expiry', '有效期 (月 / 年)');
+      document.getElementById('lblCvc').textContent = t('lbl_cvc', '安全码 (CVC)');
+      document.getElementById('lblHolder').textContent = t('lbl_holder', '持卡人姓名');
+      document.getElementById('lblAddr').textContent = t('lbl_addr', '账单地址 (Address Line 1)');
+      document.getElementById('lblZip').textContent = t('lbl_zip', '免税邮编 / 州');
+      document.getElementById('lblProxyTemplate').textContent = t('lbl_proxy_template', '🛡️ 全局代理模板（留空默认直接使用本机当前美区网络；如需使用代理可粘贴）');
+      document.getElementById('btnTestProxy').textContent = t('btn_test_proxy', '🔍 测试代理连通性');
+      document.getElementById('chkAutoCancel').innerHTML = t('chk_auto_cancel', '✅ <strong>Step 5 自动取消续订保护</strong>（叠满 24 个月后立即自动前往 Google Play 取消自动续订，锁死 2028 年到期日，全程 US$0.00 零扣费）');
+      document.getElementById('cardImportTitle').textContent = t('card_import_title', '📥 批量放号导入区（支持任意分隔符，自动识别辅助邮箱与 2FA 密钥）');
+      document.getElementById('btnImport').textContent = t('btn_import', '➕ 一键导入账号列表');
+      document.getElementById('importHint').textContent = t('import_hint', '💡 提示：无 2FA 白号（带辅助邮箱）与 2FA 号均可直接导入一键全自动执行！');
+      document.getElementById('cardAccountsTitle').textContent = t('card_accounts_title', '📋 账号队列与实时进度监控（点击 2FA 动态码可一键复制）');
+      document.getElementById('thId').textContent = t('th_id', '编号');
+      document.getElementById('thEmail').textContent = t('th_email', 'Google 邮箱 / 密码 / 辅助邮箱');
+      document.getElementById('thAuth').textContent = t('th_auth', '验证方式 / 2FA');
+      document.getElementById('thStatus').textContent = t('th_status', '状态');
+      document.getElementById('thProgress').textContent = t('th_progress', '5 步零成本两年 Pro 流水线进度');
+      document.getElementById('thExpiry').textContent = t('th_expiry', '当前到期日');
+      document.getElementById('thScreenshot').textContent = t('th_screenshot', '核验图');
+      document.getElementById('thActions').textContent = t('th_actions', '单号控制操作');
+      document.getElementById('cardLogsTitle').textContent = t('card_logs_title', '🖥️ 实时自动化执行日志 (Playwright CDP + Ngbm Interceptor)');
+      document.getElementById('logsHint').textContent = t('logs_hint', '遇到绑卡 reCAPTCHA 人机验证时会自动弹窗提醒您点一下复选框，点完自动继续');
+      document.getElementById('btnBatchRunText').textContent = t('btn_batch_run', '▶ 一键全自动跑所有待执行账号');
+      document.getElementById('btnStopText').textContent = t('btn_stop_all', '⏹ 停止任务');
+    }
   </script>
 </body>
 </html>
