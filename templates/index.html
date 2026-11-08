@@ -3,21 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title id="pageTitle">Google AI Ultra (5x / 20x) 全自动一条龙控制台</title>
+  <title id="pageTitle">Google AI Pro (5 TB) 2-Year Auto Console</title>
   <style>
     :root {
-      --bg: #0b0f19;
-      --panel: #131b2e;
-      --panel-hover: #19233c;
-      --border: #23304f;
-      --text: #e2e8f0;
-      --muted: #94a3b8;
-      --primary: #3b82f6;
-      --primary-hover: #2563eb;
-      --success: #10b981;
-      --warning: #f59e0b;
-      --danger: #ef4444;
-      --purple: #8b5cf6;
+      --bg: #090d16;
+      --panel: #111827;
+      --panel-hover: #1f2937;
+      --panel-glass: rgba(17, 24, 39, 0.75);
+      --border: #1f2937;
+      --border-focus: #3b82f6;
+      --text: #f3f4f6;
+      --muted: #9ca3af;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --success: #059669;
+      --warning: #d97706;
+      --danger: #dc2626;
+      --purple: #7c3aed;
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     }
     * {
       box-sizing: border-box;
@@ -26,90 +29,102 @@
     }
     body {
       background: var(--bg);
+      background-image: radial-gradient(at 0% 0%, rgba(37, 99, 235, 0.08) 0px, transparent 50%),
+                        radial-gradient(at 100% 100%, rgba(124, 58, 237, 0.05) 0px, transparent 50%);
       color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
-      font-size: 14px;
+      font-family: var(--font-family);
+      font-size: 13.5px;
       line-height: 1.5;
-      padding: 18px 24px;
+      padding: 24px;
+      min-height: 100vh;
     }
     /* Top Header */
     .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: linear-gradient(135deg, #16213e 0%, #0f172a 100%);
+      background: var(--panel-glass);
+      backdrop-filter: blur(12px);
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 16px 22px;
-      margin-bottom: 18px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+      border-radius: 14px;
+      padding: 18px 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
     }
     .header-left h1 {
-      font-size: 20px;
+      font-size: 19px;
       font-weight: 700;
+      letter-spacing: -0.01em;
       display: flex;
       align-items: center;
       gap: 10px;
       color: #fff;
     }
     .badge-pro {
-      background: linear-gradient(90deg, #3b82f6, #8b5cf6);
-      font-size: 12px;
-      padding: 2px 10px;
-      border-radius: 999px;
+      background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+      font-size: 11.5px;
+      padding: 3px 12px;
+      border-radius: 9999px;
       font-weight: 600;
+      letter-spacing: 0.02em;
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
     }
     .header-left p {
       color: var(--muted);
       font-size: 12.5px;
-      margin-top: 4px;
+      margin-top: 5px;
     }
     .header-actions {
       display: flex;
       align-items: center;
       gap: 10px;
     }
-    /* Buttons & Inputs */
+    /* Controls */
     button {
       cursor: pointer;
       border: 1px solid transparent;
       border-radius: 8px;
-      padding: 8px 14px;
+      padding: 7px 14px;
       font-size: 13px;
       font-weight: 600;
       color: #fff;
       background: var(--primary);
-      transition: all 0.15s ease;
+      transition: all 0.15s ease-in-out;
       display: inline-flex;
       align-items: center;
       gap: 6px;
     }
     button:hover {
       background: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+    button:active {
+      transform: translateY(0);
     }
     button:disabled {
-      opacity: 0.45;
+      opacity: 0.5;
       cursor: not-allowed;
+      transform: none;
     }
     .btn-success {
       background: var(--success);
     }
     .btn-success:hover {
-      background: #059669;
+      background: #047857;
     }
     .btn-danger {
       background: var(--danger);
     }
     .btn-danger:hover {
-      background: #dc2626;
+      background: #b91c1c;
     }
     .btn-secondary {
-      background: #1e293b;
-      border-color: #334155;
-      color: #cbd5e1;
+      background: #1f2937;
+      border: 1px solid #374151;
+      color: #e5e7eb;
     }
     .btn-secondary:hover {
-      background: #334155;
+      background: #374151;
       color: #fff;
     }
     .btn-sm {
@@ -118,50 +133,53 @@
       border-radius: 6px;
     }
     input, select, textarea {
-      background: #0b1120;
+      background: #0d131f;
       border: 1px solid var(--border);
       color: var(--text);
       border-radius: 8px;
-      padding: 8px 11px;
+      padding: 8px 12px;
       font-size: 13px;
+      font-family: inherit;
       outline: none;
-      transition: border-color 0.15s;
+      transition: border-color 0.15s, box-shadow 0.15s;
     }
     input:focus, select:focus, textarea:focus {
-      border-color: var(--primary);
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
     }
-    /* Main Grid */
+    /* Layout */
     .top-grid {
       display: grid;
       grid-template-columns: 1.25fr 1fr;
-      gap: 18px;
-      margin-bottom: 18px;
+      gap: 20px;
+      margin-bottom: 20px;
     }
     .card {
       background: var(--panel);
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 16px 18px;
+      border-radius: 14px;
+      padding: 18px 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
     .card-title {
-      font-size: 15px;
+      font-size: 14.5px;
       font-weight: 700;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      color: #f8fafc;
+      color: #f9fafb;
     }
     .form-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      margin-bottom: 10px;
+      gap: 12px;
+      margin-bottom: 12px;
     }
     .form-group {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 5px;
     }
     .form-group.col-2 {
       grid-column: span 2;
@@ -171,56 +189,64 @@
     }
     .form-group label {
       font-size: 12px;
+      font-weight: 500;
       color: var(--muted);
     }
     .checkbox-row {
       display: flex;
       align-items: center;
       gap: 8px;
-      margin-top: 6px;
+      margin-top: 8px;
       font-size: 13px;
-      color: #cbd5e1;
+      color: #d1d5db;
       cursor: pointer;
     }
     .checkbox-row input {
       width: 16px;
       height: 16px;
+      accent-color: var(--primary);
       cursor: pointer;
     }
-    /* Pipeline Steps Legend */
+    /* Pipeline */
     .pipeline-bar {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
-      gap: 8px;
-      margin-bottom: 18px;
+      gap: 10px;
+      margin-bottom: 20px;
     }
     .pipe-item {
-      background: #111827;
+      background: #0d131f;
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 8px 10px;
-      font-size: 12px;
+      border-radius: 10px;
+      padding: 10px 12px;
+      transition: border-color 0.15s;
     }
     .pipe-item strong {
       display: block;
       color: #60a5fa;
-      margin-bottom: 2px;
+      font-size: 12.5px;
+      font-weight: 600;
+      margin-bottom: 3px;
     }
     .pipe-item span {
       color: var(--muted);
       font-size: 11.5px;
+      line-height: 1.4;
+      display: block;
     }
-    /* Accounts Table */
+    /* Table */
     .table-wrap {
       overflow-x: auto;
+      border-radius: 8px;
+      border: 1px solid var(--border);
     }
     table {
       width: 100%;
       border-collapse: collapse;
+      text-align: left;
     }
     th, td {
-      padding: 11px 12px;
-      text-align: left;
+      padding: 12px 14px;
       border-bottom: 1px solid var(--border);
       vertical-align: middle;
     }
@@ -228,65 +254,74 @@
       color: var(--muted);
       font-weight: 600;
       font-size: 12px;
-      background: #0f172a;
+      background: #0b111e;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    tr:last-child td {
+      border-bottom: none;
     }
     tr:hover td {
-      background: rgba(255, 255, 255, 0.02);
+      background: rgba(255, 255, 255, 0.015);
     }
     .totp-pill {
-      font-family: "JetBrains Mono", Consolas, monospace;
-      font-size: 14px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 13.5px;
       font-weight: 700;
       color: #38bdf8;
-      background: rgba(56, 189, 248, 0.12);
-      border: 1px solid rgba(56, 189, 248, 0.3);
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.25);
       padding: 3px 8px;
       border-radius: 6px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      transition: background 0.15s;
+    }
+    .totp-pill:hover {
+      background: rgba(56, 189, 248, 0.18);
     }
     .totp-rem {
       font-size: 11px;
       color: var(--muted);
-      font-weight: 400;
+      font-weight: normal;
     }
-    /* Status Badges */
+    /* Badges */
     .status-badge {
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      padding: 3px 9px;
-      border-radius: 999px;
+      padding: 3px 10px;
+      border-radius: 9999px;
       font-size: 12px;
       font-weight: 600;
     }
     .status-pending {
-      background: rgba(148, 163, 184, 0.15);
-      color: #cbd5e1;
+      background: rgba(156, 163, 175, 0.15);
+      color: #d1d5db;
     }
     .status-running {
-      background: rgba(59, 130, 246, 0.2);
+      background: rgba(37, 99, 235, 0.2);
       color: #60a5fa;
-      border: 1px solid rgba(59, 130, 246, 0.4);
+      border: 1px solid rgba(37, 99, 235, 0.4);
       animation: pulse 1.5s infinite;
     }
     .status-waiting_human {
-      background: rgba(245, 158, 11, 0.25);
+      background: rgba(217, 119, 6, 0.25);
       color: #fbbf24;
-      border: 1px solid #f59e0b;
+      border: 1px solid #d97706;
       animation: pulse 1s infinite;
     }
     .status-completed {
-      background: rgba(16, 185, 129, 0.2);
+      background: rgba(5, 150, 105, 0.2);
       color: #34d399;
-      border: 1px solid rgba(16, 185, 129, 0.35);
+      border: 1px solid rgba(5, 150, 105, 0.35);
     }
     .status-error {
-      background: rgba(239, 68, 68, 0.2);
+      background: rgba(220, 38, 38, 0.2);
       color: #f87171;
-      border: 1px solid rgba(239, 68, 68, 0.35);
+      border: 1px solid rgba(220, 38, 38, 0.35);
     }
     @keyframes pulse {
       0%, 100% { opacity: 1; }
@@ -299,7 +334,7 @@
       margin-bottom: 4px;
     }
     .step-dot {
-      width: 22px;
+      width: 20px;
       height: 18px;
       border-radius: 4px;
       font-size: 11px;
@@ -307,14 +342,14 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #1e293b;
-      color: #64748b;
-      border: 1px solid #334155;
+      background: #1f2937;
+      color: #6b7280;
+      border: 1px solid #374151;
     }
     .step-dot.done {
-      background: rgba(16, 185, 129, 0.25);
+      background: rgba(5, 150, 105, 0.25);
       color: #34d399;
-      border-color: #10b981;
+      border-color: #059669;
     }
     .step-dot.active {
       background: #2563eb;
@@ -327,18 +362,18 @@
       max-width: 310px;
       word-break: break-all;
     }
-    /* Log Terminal */
+    /* Terminal */
     .terminal {
-      background: #070a12;
+      background: #080c14;
       border: 1px solid var(--border);
       border-radius: 10px;
       padding: 12px 14px;
       height: 270px;
       overflow-y: auto;
-      font-family: "JetBrains Mono", Consolas, monospace;
-      font-size: 12.5px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 12px;
       line-height: 1.6;
-      color: #a7f3d0;
+      color: #93c5fd;
     }
     .log-line {
       white-space: pre-wrap;
@@ -347,11 +382,12 @@
     .log-warn { color: #fde047; font-weight: 600; }
     .log-err { color: #f87171; font-weight: 600; }
     .log-ok { color: #34d399; }
-    /* Modal for Screenshot */
+    /* Modal */
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(4px);
       display: none;
       align-items: center;
       justify-content: center;
@@ -361,11 +397,12 @@
     .modal-box {
       background: var(--panel);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 14px;
       max-width: 1100px;
       max-height: 90vh;
       overflow: auto;
-      padding: 16px;
+      padding: 18px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     }
     .modal-box img {
       max-width: 100%;
@@ -380,29 +417,29 @@
   <div class="header">
     <div class="header-left">
       <h1>
-        🚀 <span id="headerTitle">Google AI Pro (5 TB) 零成本两年全自动控制台</span>
-        <span class="badge-pro" id="headerBadge">US$0.00 零消费 · 叠满 24个月 (2028-10) · 自动退订锁死</span>
+        🚀 <span id="headerTitle">Google AI Pro (5 TB) 2-Year Auto Console</span>
+        <span class="badge-pro" id="headerBadge">US$0.00 Cost · Stack 24 Months (2028-10) · Auto Unsubscribe</span>
       </h1>
-      <p id="headerDesc">支持普通白号 / 2FA 号（自动填号密 + 辅助邮箱 / 2FA 验证码），全自动完成：登录验证 ➔ 首层 12M 免费 ($0) ➔ 二层 6M 免费叠加 ($0) ➔ 三层 6M 免费封顶 24个月 ($0) ➔ Play 自动退订锁死</p>
+      <p id="headerDesc">Supports standard & 2FA accounts (auto fill credentials + recovery/OTP). Full auto: login ➔ 12M free ($0) ➔ 6M free stack ($0) ➔ 6M free cap 24M ($0) ➔ Play auto-unsubscribe</p>
     </div>
     <div class="header-actions">
-      <select id="langSelect" onchange="setLanguage(this.value)" style="margin-right: 10px;">
+      <select id="langSelect" onchange="setLanguage(this.value)" style="margin-right: 8px;">
         <option value="en">English</option>
-        <option value="zh-CN">中文 (简体)</option>
         <option value="id">Bahasa Indonesia</option>
+        
       </select>
-      <select id="batchStartStep" title="批量执行的起始步骤">
-        <option value="1" data-i18n="batch_step1">从 Step 1 开始 (全流程零成本叠满2年 + 退订)</option>
-        <option value="2" data-i18n="batch_step2">从 Step 2 开始 (已登录，直接跑三层 $0 叠加)</option>
-        <option value="3" data-i18n="batch_step3">从 Step 3 开始 (已有12M，继续跑二层+三层 $0 叠加)</option>
-        <option value="4" data-i18n="batch_step4">从 Step 4 开始 (已有18M，跑最后一层封顶24M + 退订)</option>
-        <option value="5" data-i18n="batch_step5">从 Step 5 开始 (仅去 Google Play 取消自动续订)</option>
+      <select id="batchStartStep" title="Batch Execution Start Step">
+        <option value="1" id="batchOpt1">Start from Step 1 (Full 2-Year Stack + Unsubscribe)</option>
+        <option value="2" id="batchOpt2">Start from Step 2 (Logged in, run 3-layer $0 stack)</option>
+        <option value="3" id="batchOpt3">Start from Step 3 (Has 12M, run layer 2+3 $0 stack)</option>
+        <option value="4" id="batchOpt4">Start from Step 4 (Has 18M, cap to 24M + Unsubscribe)</option>
+        <option value="5" id="batchOpt5">Start from Step 5 (Google Play Cancel Auto-renew only)</option>
       </select>
       <button class="btn-success" id="btnBatchRun" onclick="runBatch()">
-        <span id="btnBatchRunText">▶ 一键全自动跑所有待执行账号</span>
+        <span id="btnBatchRunText">▶ Full Auto Run All Pending</span>
       </button>
       <button class="btn-danger" onclick="stopAll()">
-        <span id="btnStopText">⏹ 停止任务</span>
+        <span id="btnStopText">⏹ Stop Tasks</span>
       </button>
     </div>
   </div>
@@ -410,24 +447,24 @@
   <!-- 5-Step Pipeline Overview -->
   <div class="pipeline-bar">
     <div class="pipe-item">
-      <strong id="pipe1Title">Step 1 · 登录与过验证</strong>
-      <span id="pipe1Desc">自动填号密 + 辅助邮箱 / 2FA 动态码</span>
+      <strong id="pipe1Title">Step 1 · Login & Verify</strong>
+      <span id="pipe1Desc">Auto fill credentials + recovery/2FA OTP</span>
     </div>
     <div class="pipe-item">
-      <strong id="pipe2Title">Step 2 · 首层 12M 免费 ($0)</strong>
-      <span id="pipe2Desc">12M Pro 5TB + YT 试用 (未绑卡自动内联绑卡)</span>
+      <strong id="pipe2Title">Step 2 · Tier 1 12M Free ($0)</strong>
+      <span id="pipe2Desc">12M Pro 5TB + YT trial (auto card bind)</span>
     </div>
     <div class="pipe-item">
-      <strong id="pipe3Title">Step 3 · 二层 6M 叠加 ($0)</strong>
-      <span id="pipe3Desc">S25 Pro 6M + YT 试用 Mode 5 顺延至 18个月</span>
+      <strong id="pipe3Title">Step 3 · Tier 2 6M Stack ($0)</strong>
+      <span id="pipe3Desc">S25 Pro 6M + YT trial extend to 18M</span>
     </div>
     <div class="pipe-item">
-      <strong id="pipe4Title">Step 4 · 三层 6M 封顶 ($0)</strong>
-      <span id="pipe4Desc">Pixel 6M + YT 试用 Mode 5 叠满 24个月 (2028-10)</span>
+      <strong id="pipe4Title">Step 4 · Tier 3 6M Cap ($0)</strong>
+      <span id="pipe4Desc">Pixel 6M + YT trial cap to 24M (2028-10)</span>
     </div>
     <div class="pipe-item">
-      <strong id="pipe5Title">Step 5 · 自动退订锁死</strong>
-      <span id="pipe5Desc">Play 商店取消续订，全程 US$0.00 截图存证</span>
+      <strong id="pipe5Title">Step 5 · Auto Unsubscribe</strong>
+      <span id="pipe5Desc">Play Store cancel auto-renew, proof saved</span>
     </div>
   </div>
 
@@ -436,47 +473,47 @@
     <!-- Left: Global Plan & Card Config -->
     <div class="card">
       <div class="card-title">
-        <span id="cardConfigTitle">⚙️ 全局免税区、零成本两年 Pro 方案与银行卡配置</span>
-        <button class="btn-sm" onclick="saveConfig()" id="btnSaveConfig">💾 保存配置</button>
+        <span id="cardConfigTitle">⚙️ Global Tax-Free Region, Plan & Card Config</span>
+        <button class="btn-sm" onclick="saveConfig()" id="btnSaveConfig">💾 Save Config</button>
       </div>
       <div class="form-grid">
         <div class="form-group col-2">
-          <label id="lblTargetRegion">🌍 目标地区 / 免税邮编区（零成本叠加两年 Pro 固定走美区免税州 97201）</label>
+          <label id="lblTargetRegion">🌍 Target Region / Tax-Free ZIP Code</label>
           <select id="cfgTargetRegion" onchange="onRegionChange(this.value)">
-            <option value="US" id="optRegionUS">🇺🇸 美国免税区 (US / USD · 俄勒冈 97201) — US$0.00 零成本叠加两年 Pro (5 TB) 必选</option>
+            <option value="US" id="optRegionUS">🇺🇸 US Tax-Free Zone (US / USD · Oregon 97201) — Required for US$0.00 2-Year Pro (5 TB)</option>
           </select>
         </div>
         <div class="form-group col-2">
-          <label id="lblTargetPlan">🎯 目标执行方案</label>
+          <label id="lblTargetPlan">🎯 Target Execution Plan</label>
           <select id="cfgTargetPlan">
-            <option value="pro_2year_zero" id="optPlanZero">🎁 零成本叠加两年 Google AI Pro (5 TB) — 全程 US$0.00 叠满 24 个月至 2028-10</option>
+            <option value="pro_2year_zero" id="optPlanZero">🎁 Zero-Cost 2-Year Google AI Pro (5 TB) — 100% US$0.00 stacked to 2028-10</option>
           </select>
         </div>
         <div class="form-group col-2">
-          <label id="lblCardNumber">卡号 (支持 Visa / Mastercard 外币卡，仅用于 $0.00 试用验证)</label>
-          <input type="text" id="cfgCardNumber" placeholder="请填写您的 Visa / Mastercard 卡号 (16位)" />
+          <label id="lblCardNumber">Card Number (Visa / Mastercard)</label>
+          <input type="text" id="cfgCardNumber" placeholder="16-digit Visa / Mastercard number" />
         </div>
         <div class="form-group">
-          <label id="lblExpiry">有效期 (月 / 年)</label>
+          <label id="lblExpiry">Expiration (Month / Year)</label>
           <div style="display:flex; gap:6px;">
-            <input type="text" id="cfgExpMonth" placeholder="月 (如 08)" style="width:50%;" />
-            <input type="text" id="cfgExpYear" placeholder="年 (如 29)" style="width:50%;" />
+            <input type="text" id="cfgExpMonth" placeholder="MM (e.g. 08)" style="width:50%;" />
+            <input type="text" id="cfgExpYear" placeholder="YY (e.g. 29)" style="width:50%;" />
           </div>
         </div>
         <div class="form-group">
-          <label id="lblCvc">安全码 (CVC)</label>
-          <input type="text" id="cfgCvc" placeholder="3位安全码" />
+          <label id="lblCvc">Security Code (CVC)</label>
+          <input type="text" id="cfgCvc" placeholder="3-digit CVC" />
         </div>
         <div class="form-group">
-          <label id="lblHolder">持卡人姓名</label>
-          <input type="text" id="cfgHolder" placeholder="英文姓名 (如 ZHANG SAN)" />
+          <label id="lblHolder">Cardholder Name</label>
+          <input type="text" id="cfgHolder" placeholder="Cardholder Name (e.g. JOHN DOE)" />
         </div>
         <div class="form-group col-2">
-          <label id="lblAddr">账单地址 (Address Line 1)</label>
+          <label id="lblAddr">Billing Address (Address Line 1)</label>
           <input type="text" id="cfgAddr" placeholder="700 SW 5th Ave" />
         </div>
         <div class="form-group">
-          <label id="lblZip">免税邮编 / 州</label>
+          <label id="lblZip">Tax-Free Postal Code / State</label>
           <div style="display:flex; gap:6px;">
             <input type="text" id="cfgZip" placeholder="97201" style="width:45%;" />
             <input type="text" id="cfgProvince" placeholder="OR" style="width:55%;" />
@@ -484,38 +521,38 @@
         </div>
         <div class="form-group col-4">
           <div style="display:flex; justify-content:space-between; align-items:center;">
-            <label id="lblProxyTemplate">🛡️ 全局代理模板（留空默认直接使用本机当前美区网络；如需使用代理可粘贴）</label>
-            <button type="button" class="btn-sm btn-secondary" onclick="testProxyNow()" id="btnTestProxy">🔍 测试代理连通性</button>
+            <label id="lblProxyTemplate">🛡️ Global Proxy Template (Optional)</label>
+            <button type="button" class="btn-sm btn-secondary" onclick="testProxyNow()" id="btnTestProxy">🔍 Test Proxy</button>
           </div>
           <input
             type="text"
             id="cfgProxyTemplate"
-            placeholder="留空默认使用本机当前网络 (推荐)，或填入 http://user:pass@host:port"
+            placeholder="Leave blank for local network, or http://user:pass@host:port"
           />
           <div id="proxyTestResult" style="font-size:12px; color:#34d399; margin-top:4px;">
-            ✅ 默认使用本机美区网络（内联免税邮编 97201，全程三层 US$0.00 零扣费）
+            ✅ Using local network by default (Tax-free zip 97201, 3-layer US$0.00 free stack)
           </div>
         </div>
       </div>
       <label class="checkbox-row">
         <input type="checkbox" id="cfgAutoCancel" checked />
-        <span id="chkAutoCancel">✅ <strong>Step 5 自动取消续订保护</strong>（叠满 24 个月后立即自动前往 Google Play 取消自动续订，锁死 2028 年到期日，全程 US$0.00 零扣费）</span>
+        <span id="chkAutoCancel">✅ <strong>Step 5 Auto Unsubscribe Protection</strong> (Cancel auto-renew on Play Store after 24M stack)</span>
       </label>
     </div>
 
     <!-- Right: Bulk Account Import -->
     <div class="card" style="display:flex; flex-direction:column;">
       <div class="card-title">
-        <span id="cardImportTitle">📥 批量放号导入区（支持任意分隔符，自动识别辅助邮箱与 2FA 密钥）</span>
-        <button class="btn-sm btn-success" onclick="importAccounts()" id="btnImport">➕ 一键导入账号列表</button>
+        <span id="cardImportTitle">📥 Bulk Account Import Zone</span>
+        <button class="btn-sm btn-success" onclick="importAccounts()" id="btnImport">➕ Import Accounts</button>
       </div>
       <textarea
         id="importText"
         style="flex:1; width:100%; resize:none; font-family:Consolas,monospace; font-size:12.5px;"
-        placeholder="每行放一个账号，支持 ----、/、—、|、空格 等任意分隔符：&#10;邮箱----密码----辅助邮箱&#10;邮箱/密码/辅助邮箱/2FA密钥&#10;邮箱—密码—辅助邮箱&#10;邮箱----密码----2FA密钥"
+        placeholder="One account per line, supports ----, /, |, space:&#10;email----password----recovery&#10;email/password/recovery/2fa_secret"
       ></textarea>
       <div style="font-size:12px; color:var(--muted); margin-top:8px;" id="importHint">
-        💡 提示：无 2FA 白号（带辅助邮箱）与 2FA 号均可直接导入一键全自动执行！
+        💡 Tip: Standard and 2FA accounts can be imported directly!
       </div>
     </div>
   </div>
@@ -523,21 +560,21 @@
   <!-- Accounts Table Card -->
   <div class="card" style="margin-bottom: 18px;">
     <div class="card-title">
-      <span id="cardAccountsTitle">📋 账号队列与实时进度监控（点击 2FA 动态码可一键复制）</span>
-      <span id="summaryStats" style="font-size:12.5px; color:var(--muted); font-weight:normal;">加载中...</span>
+      <span id="cardAccountsTitle">📋 Account Queue & Real-Time Progress</span>
+      <span id="summaryStats" style="font-size:12.5px; color:var(--muted); font-weight:normal;">Loading...</span>
     </div>
     <div class="table-wrap">
       <table>
         <thead>
           <tr>
-            <th style="width:85px;" id="thId">编号</th>
-            <th style="width:250px;" id="thEmail">Google 邮箱 / 密码 / 辅助邮箱</th>
-            <th style="width:140px;" id="thAuth">验证方式 / 2FA</th>
-            <th style="width:110px;" id="thStatus">状态</th>
-            <th style="width:320px;" id="thProgress">5 步零成本两年 Pro 流水线进度</th>
-            <th style="width:155px;" id="thExpiry">当前到期日</th>
-            <th style="width:75px;" id="thScreenshot">核验图</th>
-            <th id="thActions">单号控制操作</th>
+            <th style="width:85px;" id="thId">ID</th>
+            <th style="width:250px;" id="thEmail">Google Email / Password / Recovery</th>
+            <th style="width:140px;" id="thAuth">Auth / 2FA</th>
+            <th style="width:110px;" id="thStatus">Status</th>
+            <th style="width:320px;" id="thProgress">5-Step Pipeline Progress</th>
+            <th style="width:155px;" id="thExpiry">Expiry Date</th>
+            <th style="width:75px;" id="thScreenshot">Proof</th>
+            <th id="thActions">Actions</th>
           </tr>
         </thead>
         <tbody id="accountsTbody"></tbody>
@@ -548,8 +585,8 @@
   <!-- Live Logs Terminal -->
   <div class="card">
     <div class="card-title">
-      <span id="cardLogsTitle">🖥️ 实时自动化执行日志 (Playwright CDP + Ngbm Interceptor)</span>
-      <span style="font-size:12px; color:var(--muted); font-weight:normal;" id="logsHint">遇到绑卡 reCAPTCHA 人机验证时会自动弹窗提醒您点一下复选框，点完自动继续</span>
+      <span id="cardLogsTitle">🖥️ Real-Time Execution Logs</span>
+      <span style="font-size:12px; color:var(--muted); font-weight:normal;" id="logsHint">Auto popup when reCAPTCHA appears</span>
     </div>
     <div class="terminal" id="logTerminal"></div>
   </div>
@@ -558,8 +595,8 @@
   <div class="modal-backdrop" id="imgModal" onclick="closeModal()">
     <div class="modal-box" onclick="event.stopPropagation()">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-        <strong id="modalTitle">核验截图预览</strong>
-        <button class="btn-sm btn-secondary" onclick="closeModal()" id="btnModalClose">✖ 关闭</button>
+        <strong id="modalTitle">Proof Screenshot Preview</strong>
+        <button class="btn-sm btn-secondary" onclick="closeModal()" id="btnModalClose">✖ Close</button>
       </div>
       <img id="modalImg" src="" alt="screenshot" />
     </div>
@@ -631,7 +668,7 @@
         const total = (data.accounts || []).length;
         const done = (data.accounts || []).filter(a => a.status === 'completed').length;
         const running = data.active_count || 0;
-        document.getElementById('summaryStats').textContent = t('summary_stats', `共 ${total} 个账号 | 已完成: ${done} | 运行中: ${running}`)
+        document.getElementById('summaryStats').textContent = t('summary_stats', `Total ${total} accounts | Done: ${done} | Running: ${running}`)
           .replace('{{total}}', total).replace('{{done}}', done).replace('{{running}}', running);
       } catch (e) {
         console.error('State poll error:', e);
@@ -640,12 +677,12 @@
 
     function statusBadgeHtml(status) {
       const map = {
-        pending: ['status-pending', t('status_pending', '⏳ 待执行')],
-        running: ['status-running', t('status_running', '⚡ 执行中')],
-        waiting_human: ['status-waiting_human', t('status_waiting', '🖐️ 等点人机验证')],
-        completed: ['status-completed', t('status_completed', '✅ 已完成')],
-        error: ['status-error', t('status_error', '❌ 异常中断')],
-        stopped: ['status-pending', t('status_stopped', '⏹ 已停止')]
+        pending: ['status-pending', t('status_pending', '⏳ Pending')],
+        running: ['status-running', t('status_running', '⚡ Running')],
+        waiting_human: ['status-waiting_human', t('status_waiting', '🖐️ Waiting CAPTCHA')],
+        completed: ['status-completed', t('status_completed', '✅ Completed')],
+        error: ['status-error', t('status_error', '❌ Error Stop')],
+        stopped: ['status-pending', t('status_stopped', '⏹ Stopped')]
       };
       const [cls, label] = map[status] || ['status-pending', status];
       return `<span class="status-badge ${cls}">${label}</span>`;
@@ -668,25 +705,25 @@
       tbody.innerHTML = accounts.map(acc => {
         const savedStart = selectedStartSteps[acc.id] || 1;
         const shotBtn = acc.last_screenshot
-          ? `<button class="btn-sm btn-secondary" onclick="showScreenshot('${acc.id}', '${acc.last_screenshot}')">${t('btn_screenshot', '🖼 查看')}</button>`
+          ? `<button class="btn-sm btn-secondary" onclick="showScreenshot('${acc.id}', '${acc.last_screenshot}')">${t('btn_screenshot', '🖼 View')}</button>`
           : `<span style="color:var(--muted);font-size:12px;">${t('modal_screenshot', '-')}</span>`;
 
         const totpHtml = (acc.totp_secret && acc.totp_now && acc.totp_now !== '------')
-          ? `<div class="totp-pill" onclick="copyText('${acc.totp_now}')" title="${t('totp_hint', '点击复制 6 位动态验证码')}">
+          ? `<div class="totp-pill" onclick="copyText('${acc.totp_now}')" title="${t('totp_hint', 'Click to copy OTP')}">
                <span>${acc.totp_now}</span>
                <span class="totp-rem">${acc.totp_rem}s</span>
              </div>`
-          : `<span style="font-size:12px; color:#34d399;">${t('auth_email', '📧 辅助邮箱验证')}</span>`;
+          : `<span style="font-size:12px; color:#34d399;">${t('auth_email', '📧 Recovery Email Auth')}</span>`;
 
         return `
           <tr>
             <td><strong>${acc.id}</strong></td>
             <td>
               <div style="font-weight:600; color:#f1f5f9;">${acc.email}</div>
-              <div style="font-size:11.5px; color:var(--muted); font-family:Consolas,monospace;">
-                ${t('password_label', '密码:')}: ${acc.password}
-                ${acc.recovery_email ? `<br/>${t('recovery_label', '辅助:')}: ${acc.recovery_email}` : ''}
-                ${acc.ip_info ? `<span style="margin-left:6px; color:#38bdf8;">[${acc.ip_info}]</span>` : (acc.proxy ? `<span style="margin-left:6px; color:#a78bfa;">${t('proxy_label', '[独立代理]')}</span>` : '')}
+              <div style="font-size:11.5px; color:var(--muted); font-family:ui-monospace,monospace;">
+                ${t('password_label', 'Password')}: ${acc.password}
+                ${acc.recovery_email ? `<br/>${t('recovery_label', 'Recovery')}: ${acc.recovery_email}` : ''}
+                ${acc.ip_info ? `<span style="margin-left:6px; color:#38bdf8;">[${acc.ip_info}]</span>` : (acc.proxy ? `<span style="margin-left:6px; color:#a78bfa;">${t('proxy_label', '[Proxy]')}</span>` : '')}
               </div>
             </td>
             <td>${totpHtml}</td>
@@ -696,7 +733,7 @@
               <div class="step-msg">${acc.step_message || ''}</div>
             </td>
             <td>
-              <span style="font-weight:600; color:${(acc.expiry_date || '').includes('2027年10月') || (acc.expiry_date || '').includes('2027年11月') || (acc.expiry_date || '').includes('2028') ? '#34d399' : '#e2e8f0'}">
+              <span style="font-weight:600; color:${(acc.expiry_date || '').includes('2027') || (acc.expiry_date || '').includes('2028') ? '#34d399' : '#e2e8f0'}">
                 ${acc.expiry_date || '-'}
               </span>
             </td>
@@ -707,24 +744,24 @@
                   style="padding:4px 6px; font-size:12px;"
                   onchange="selectedStartSteps['${acc.id}'] = parseInt(this.value)"
                 >
-                  <option value="1" ${savedStart === 1 ? 'selected' : ''}>${t('select_step1', '从 Step 1 全跑')}</option>
-                  <option value="2" ${savedStart === 2 ? 'selected' : ''}>${t('select_step2', '从 Step 2 首层12M($0)')}</option>
-                  <option value="3" ${savedStart === 3 ? 'selected' : ''}>${t('select_step3', '从 Step 3 二层6M($0)')}</option>
-                  <option value="4" ${savedStart === 4 ? 'selected' : ''}>${t('select_step4', '从 Step 4 三层封顶($0)')}</option>
-                  <option value="5" ${savedStart === 5 ? 'selected' : ''}>${t('select_step5', '从 Step 5 退订锁死')}</option>
+                  <option value="1" ${savedStart === 1 ? 'selected' : ''}>${t('select_step1', 'From Step 1 (Full)')}</option>
+                  <option value="2" ${savedStart === 2 ? 'selected' : ''}>${t('select_step2', 'From Step 2 (12M)')}</option>
+                  <option value="3" ${savedStart === 3 ? 'selected' : ''}>${t('select_step3', 'From Step 3 (6M)')}</option>
+                  <option value="4" ${savedStart === 4 ? 'selected' : ''}>${t('select_step4', 'From Step 4 (Cap)')}</option>
+                  <option value="5" ${savedStart === 5 ? 'selected' : ''}>${t('select_step5', 'From Step 5 (Unsub)')}</option>
                 </select>
                 <button
                   class="btn-sm ${acc.is_running ? 'btn-danger' : 'btn-success'}"
                   onclick="${acc.is_running ? `stopSingle('${acc.id}')` : `runSingle('${acc.id}')`}"
                 >
-                  ${acc.is_running ? t('btn_stop_single', '⏹ 停止') : t('btn_run', '▶ 启动一条龙')}
+                  ${acc.is_running ? t('btn_stop_single', '⏹ Stop') : t('btn_run', '▶ Run Pipeline')}
                 </button>
                 <button
                   class="btn-sm ${openedBrowserMap[acc.id] ? 'btn-success' : 'btn-secondary'}"
                   onclick="openBrowser('${acc.id}')"
-                  title="${t('btn_browser', '🌐 浏览器')}"
+                  title="${t('btn_browser', '🌐 Browser')}"
                 >
-                  ${openedBrowserMap[acc.id] ? t('btn_browser_opened', '✅ 已打开') : t('btn_browser', '🌐 浏览器')}
+                  ${openedBrowserMap[acc.id] ? t('btn_browser_opened', '✅ Opened') : t('btn_browser', '🌐 Browser')}
                 </button>
                 <button class="btn-sm btn-secondary" onclick="resetAccount('${acc.id}')" title="${t('btn_reset', '🔄')}">
                   ${t('btn_reset', '🔄')}
@@ -735,9 +772,9 @@
                 <button
                   class="btn-sm ${copiedAccountMap[acc.id] ? 'btn-success' : 'btn-secondary'}"
                   onclick="copyAccountFull('${acc.id}', '${acc.email}', '${acc.password}', '${acc.totp_secret || acc.recovery_email || ''}')"
-                  title="${t('btn_copy', '📋 复制')}"
+                  title="${t('btn_copy', '📋 Copy')}"
                 >
-                  ${copiedAccountMap[acc.id] ? t('btn_copy_done', '✅ 已复制') : t('btn_copy', '📋 复制')}
+                  ${copiedAccountMap[acc.id] ? t('btn_copy_done', '✅ Copied') : t('btn_copy', '📋 Copy')}
                 </button>
               </div>
             </td>
@@ -751,8 +788,8 @@
       const isAtBottom = term.scrollHeight - term.clientHeight <= term.scrollTop + 40;
       term.innerHTML = logs.map(line => {
         let cls = 'log-line';
-        if (line.includes('⚠️') || line.includes('人机验证')) cls += ' log-warn';
-        else if (line.includes('❌') || line.includes('异常')) cls += ' log-err';
+        if (line.includes('⚠️') || line.includes('CAPTCHA') || line.includes('人机验证')) cls += ' log-warn';
+        else if (line.includes('❌') || line.includes('Error') || line.includes('异常')) cls += ' log-err';
         else if (line.includes('✅') || line.includes('🎉')) cls += ' log-ok';
         return `<div class="${cls}">${escapeHtml(line)}</div>`;
       }).join('');
@@ -775,9 +812,9 @@
       const btn = document.getElementById('btnTestProxy');
       const resBox = document.getElementById('proxyTestResult');
       btn.disabled = true;
-      btn.textContent = t('proxy_testing', '⏳ 正在检测出口 IP...');
+      btn.textContent = t('proxy_testing', '⏳ Checking egress IP...');
       resBox.style.color = '#38bdf8';
-      resBox.textContent = t('proxy_testing_msg', '正在测试代理连通性...');
+      resBox.textContent = t('proxy_testing_msg', 'Testing proxy connectivity...');
       try {
         const region = document.getElementById('cfgTargetRegion').value;
         const tpl = document.getElementById('cfgProxyTemplate').value.trim();
@@ -796,10 +833,10 @@
         }
       } catch (e) {
         resBox.style.color = '#f87171';
-        resBox.textContent = '❌ ' + t('alert_request_error', '请求异常:') + ' ' + e;
+        resBox.textContent = '❌ ' + t('alert_request_error', 'Request error:') + ' ' + e;
       } finally {
         btn.disabled = false;
-        btn.textContent = t('btn_test_proxy', '🔍 测试代理连通性');
+        btn.textContent = t('btn_test_proxy', '🔍 Test Proxy');
         fetchState();
       }
     }
@@ -833,7 +870,7 @@
 
     async function importAccounts() {
       const raw = document.getElementById('importText').value.trim();
-      if (!raw) return alert(t('alert_import_empty', '请先在文本框中粘贴要导入的账号！'));
+      if (!raw) return alert(t('alert_import_empty', 'Please paste accounts in text box first!'));
       const res = await fetch('/api/accounts/import', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -853,7 +890,7 @@
       const expY = document.getElementById('cfgExpYear').value.trim();
       const cvc = document.getElementById('cfgCvc').value.trim();
       if (num.length < 12 || !expM || !expY || !cvc) {
-        alert(t('alert_card_required', '⚠️ 请先在左侧【全局配置与内联免税绑卡】中填写您的支付卡信息（卡号、有效期月/年、CVC 安全码）后再开始执行！'));
+        alert(t('alert_card_required', '⚠️ Please fill in payment card details (Number, Expiry, CVC) in config panel first!'));
         document.getElementById('cfgCardNumber').focus();
         return false;
       }
@@ -871,7 +908,7 @@
       });
       if (!res.ok) {
         const err = await res.json();
-        alert(err.detail || t('alert_run_failed', '启动失败'));
+        alert(err.detail || t('alert_run_failed', 'Failed to start'));
       }
       fetchState();
     }
@@ -887,7 +924,7 @@
       });
       if (!res.ok) {
         const err = await res.json();
-        alert(err.detail || t('alert_batch_failed', '批量启动失败'));
+        alert(err.detail || t('alert_batch_failed', 'Batch start failed'));
       }
       fetchState();
     }
@@ -930,7 +967,7 @@
     }
 
     async function deleteAccount(accountId) {
-      if (!confirm(t('alert_confirm_delete', `确定要从列表中移除账号 ${accountId} 吗？`).replace('{{id}}', accountId))) return;
+      if (!confirm(t('alert_confirm_delete', `Are you sure you want to remove account ${accountId}?`).replace('{{id}}', accountId))) return;
       await fetch('/api/accounts/delete', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -940,7 +977,7 @@
     }
 
     function showScreenshot(accId, filename) {
-      document.getElementById('modalTitle').textContent = t('modal_title_screenshot', `${accId} 最新核验截图 (${filename})`)
+      document.getElementById('modalTitle').textContent = t('modal_title_screenshot', `${accId} Proof Screenshot (${filename})`)
         .replace('{{id}}', accId).replace('{{filename}}', filename);
       document.getElementById('modalImg').src = `/screenshots/${filename}?t=${Date.now()}`;
       document.getElementById('imgModal').style.display = 'flex';
@@ -974,49 +1011,60 @@
     })();
 
     function updatePageText() {
-      document.getElementById('pageTitle').textContent = t('page_title', 'Google AI Ultra (5x / 20x) 全自动一条龙控制台');
-      document.getElementById('headerTitle').textContent = t('header_title', 'Google AI Pro (5 TB) 零成本两年全自动控制台');
-      document.getElementById('headerBadge').textContent = t('header_badge', 'US$0.00 零消费 · 叠满 24个月 (2028-10) · 自动退订锁死');
-      document.getElementById('headerDesc').textContent = t('header_desc', '支持普通白号 / 2FA 号（自动填号密 + 辅助邮箱 / 2FA 验证码），全自动完成：登录验证 ➔ 首层 12M 免费 ($0) ➔ 二层 6M 免费叠加 ($0) ➔ 三层 6M 免费封顶 24个月 ($0) ➔ Play 自动退订锁死');
-      document.getElementById('pipe1Title').textContent = t('pipe1_title', 'Step 1 · 登录与过验证');
-      document.getElementById('pipe1Desc').textContent = t('pipe1_desc', '自动填号密 + 辅助邮箱 / 2FA 动态码');
-      document.getElementById('pipe2Title').textContent = t('pipe2_title', 'Step 2 · 首层 12M 免费 ($0)');
-      document.getElementById('pipe2Desc').textContent = t('pipe2_desc', '12M Pro 5TB + YT 试用 (未绑卡自动内联绑卡)');
-      document.getElementById('pipe3Title').textContent = t('pipe3_title', 'Step 3 · 二层 6M 叠加 ($0)');
-      document.getElementById('pipe3Desc').textContent = t('pipe3_desc', 'S25 Pro 6M + YT 试用 Mode 5 顺延至 18个月');
-      document.getElementById('pipe4Title').textContent = t('pipe4_title', 'Step 4 · 三层 6M 封顶 ($0)');
-      document.getElementById('pipe4Desc').textContent = t('pipe4_desc', 'Pixel 6M + YT 试用 Mode 5 叠满 24个月 (2028-10)');
-      document.getElementById('pipe5Title').textContent = t('pipe5_title', 'Step 5 · 自动退订锁死');
-      document.getElementById('pipe5Desc').textContent = t('pipe5_desc', 'Play 商店取消续订，全程 US$0.00 截图存证');
-      document.getElementById('cardConfigTitle').textContent = t('card_config_title', '⚙️ 全局免税区、零成本两年 Pro 方案与银行卡配置');
-      document.getElementById('btnSaveConfig').textContent = t('btn_save_config', '💾 保存配置');
-      document.getElementById('lblTargetRegion').textContent = t('lbl_target_region', '🌍 目标地区 / 免税邮编区（零成本叠加两年 Pro 固定走美区免税州 97201）');
-      document.getElementById('lblTargetPlan').textContent = t('lbl_target_plan', '🎯 目标执行方案');
-      document.getElementById('lblCardNumber').textContent = t('lbl_card_number', '卡号 (支持 Visa / Mastercard 外币卡，仅用于 $0.00 试用验证)');
-      document.getElementById('lblExpiry').textContent = t('lbl_expiry', '有效期 (月 / 年)');
-      document.getElementById('lblCvc').textContent = t('lbl_cvc', '安全码 (CVC)');
-      document.getElementById('lblHolder').textContent = t('lbl_holder', '持卡人姓名');
-      document.getElementById('lblAddr').textContent = t('lbl_addr', '账单地址 (Address Line 1)');
-      document.getElementById('lblZip').textContent = t('lbl_zip', '免税邮编 / 州');
-      document.getElementById('lblProxyTemplate').textContent = t('lbl_proxy_template', '🛡️ 全局代理模板（留空默认直接使用本机当前美区网络；如需使用代理可粘贴）');
-      document.getElementById('btnTestProxy').textContent = t('btn_test_proxy', '🔍 测试代理连通性');
-      document.getElementById('chkAutoCancel').innerHTML = t('chk_auto_cancel', '✅ <strong>Step 5 自动取消续订保护</strong>（叠满 24 个月后立即自动前往 Google Play 取消自动续订，锁死 2028 年到期日，全程 US$0.00 零扣费）');
-      document.getElementById('cardImportTitle').textContent = t('card_import_title', '📥 批量放号导入区（支持任意分隔符，自动识别辅助邮箱与 2FA 密钥）');
-      document.getElementById('btnImport').textContent = t('btn_import', '➕ 一键导入账号列表');
-      document.getElementById('importHint').textContent = t('import_hint', '💡 提示：无 2FA 白号（带辅助邮箱）与 2FA 号均可直接导入一键全自动执行！');
-      document.getElementById('cardAccountsTitle').textContent = t('card_accounts_title', '📋 账号队列与实时进度监控（点击 2FA 动态码可一键复制）');
-      document.getElementById('thId').textContent = t('th_id', '编号');
-      document.getElementById('thEmail').textContent = t('th_email', 'Google 邮箱 / 密码 / 辅助邮箱');
-      document.getElementById('thAuth').textContent = t('th_auth', '验证方式 / 2FA');
-      document.getElementById('thStatus').textContent = t('th_status', '状态');
-      document.getElementById('thProgress').textContent = t('th_progress', '5 步零成本两年 Pro 流水线进度');
-      document.getElementById('thExpiry').textContent = t('th_expiry', '当前到期日');
-      document.getElementById('thScreenshot').textContent = t('th_screenshot', '核验图');
-      document.getElementById('thActions').textContent = t('th_actions', '单号控制操作');
-      document.getElementById('cardLogsTitle').textContent = t('card_logs_title', '🖥️ 实时自动化执行日志 (Playwright CDP + Ngbm Interceptor)');
-      document.getElementById('logsHint').textContent = t('logs_hint', '遇到绑卡 reCAPTCHA 人机验证时会自动弹窗提醒您点一下复选框，点完自动继续');
-      document.getElementById('btnBatchRunText').textContent = t('btn_batch_run', '▶ 一键全自动跑所有待执行账号');
-      document.getElementById('btnStopText').textContent = t('btn_stop_all', '⏹ 停止任务');
+      document.getElementById('pageTitle').textContent = t('page_title', 'Google AI Pro (5 TB) 2-Year Auto Console');
+      document.getElementById('headerTitle').textContent = t('header_title', 'Google AI Pro (5 TB) 2-Year Auto Console');
+      document.getElementById('headerBadge').textContent = t('header_badge', 'US$0.00 Cost · Stack 24 Months (2028-10) · Auto Unsubscribe');
+      document.getElementById('headerDesc').textContent = t('header_desc', 'Supports standard & 2FA accounts (auto fill credentials + recovery/OTP). Full auto: login ➔ 12M free ($0) ➔ 6M free stack ($0) ➔ 6M free cap 24M ($0) ➔ Play auto-unsubscribe');
+      document.getElementById('pipe1Title').textContent = t('pipe1_title', 'Step 1 · Login & Verify');
+      document.getElementById('pipe1Desc').textContent = t('pipe1_desc', 'Auto fill credentials + recovery/2FA OTP');
+      document.getElementById('pipe2Title').textContent = t('pipe2_title', 'Step 2 · Tier 1 12M Free ($0)');
+      document.getElementById('pipe2Desc').textContent = t('pipe2_desc', '12M Pro 5TB + YT trial (auto card bind)');
+      document.getElementById('pipe3Title').textContent = t('pipe3_title', 'Step 3 · Tier 2 6M Stack ($0)');
+      document.getElementById('pipe3Desc').textContent = t('pipe3_desc', 'S25 Pro 6M + YT trial extend to 18M');
+      document.getElementById('pipe4Title').textContent = t('pipe4_title', 'Step 4 · Tier 3 6M Cap ($0)');
+      document.getElementById('pipe4Desc').textContent = t('pipe4_desc', 'Pixel 6M + YT trial cap to 24M (2028-10)');
+      document.getElementById('pipe5Title').textContent = t('pipe5_title', 'Step 5 · Auto Unsubscribe');
+      document.getElementById('pipe5Desc').textContent = t('pipe5_desc', 'Play Store cancel auto-renew, proof saved');
+      document.getElementById('cardConfigTitle').textContent = t('card_config_title', '⚙️ Global Tax-Free Region, Plan & Card Config');
+      document.getElementById('btnSaveConfig').textContent = t('btn_save_config', '💾 Save Config');
+      document.getElementById('lblTargetRegion').textContent = t('lbl_target_region', '🌍 Target Region / Tax-Free ZIP Code');
+      document.getElementById('lblTargetPlan').textContent = t('lbl_target_plan', '🎯 Target Execution Plan');
+      document.getElementById('lblCardNumber').textContent = t('lbl_card_number', 'Card Number (Visa / Mastercard)');
+      document.getElementById('lblExpiry').textContent = t('lbl_expiry', 'Expiration (Month / Year)');
+      document.getElementById('lblCvc').textContent = t('lbl_cvc', 'Security Code (CVC)');
+      document.getElementById('lblHolder').textContent = t('lbl_holder', 'Cardholder Name');
+      document.getElementById('lblAddr').textContent = t('lbl_addr', 'Billing Address (Address Line 1)');
+      document.getElementById('lblZip').textContent = t('lbl_zip', 'Tax-Free Postal Code / State');
+      document.getElementById('lblProxyTemplate').textContent = t('lbl_proxy_template', '🛡️ Global Proxy Template (Optional)');
+      document.getElementById('btnTestProxy').textContent = t('btn_test_proxy', '🔍 Test Proxy');
+      document.getElementById('chkAutoCancel').innerHTML = t('chk_auto_cancel', '✅ <strong>Step 5 Auto Unsubscribe Protection</strong> (Cancel auto-renew on Play Store after 24M stack)');
+      document.getElementById('cardImportTitle').textContent = t('card_import_title', '📥 Bulk Account Import Zone');
+      document.getElementById('btnImport').textContent = t('btn_import', '➕ Import Accounts');
+      document.getElementById('importHint').textContent = t('import_hint', '💡 Tip: Standard and 2FA accounts can be imported directly!');
+      document.getElementById('cardAccountsTitle').textContent = t('card_accounts_title', '📋 Account Queue & Real-Time Progress');
+      document.getElementById('thId').textContent = t('th_id', 'ID');
+      document.getElementById('thEmail').textContent = t('th_email', 'Google Email / Password / Recovery');
+      document.getElementById('thAuth').textContent = t('th_auth', 'Auth / 2FA');
+      document.getElementById('thStatus').textContent = t('th_status', 'Status');
+      document.getElementById('thProgress').textContent = t('th_progress', '5-Step Pipeline Progress');
+      document.getElementById('thExpiry').textContent = t('th_expiry', 'Expiry Date');
+      document.getElementById('thScreenshot').textContent = t('th_screenshot', 'Proof');
+      document.getElementById('thActions').textContent = t('th_actions', 'Actions');
+      document.getElementById('cardLogsTitle').textContent = t('card_logs_title', '🖥️ Real-Time Execution Logs');
+      document.getElementById('logsHint').textContent = t('logs_hint', 'Auto popup when reCAPTCHA appears');
+      document.getElementById('btnBatchRunText').textContent = t('btn_batch_run', '▶ Full Auto Run All Pending');
+      document.getElementById('btnStopText').textContent = t('btn_stop_all', '⏹ Stop Tasks');
+      
+      const b1 = document.getElementById('batchOpt1'); if (b1) b1.textContent = t('batch_step1', b1.textContent);
+      const b2 = document.getElementById('batchOpt2'); if (b2) b2.textContent = t('batch_step2', b2.textContent);
+      const b3 = document.getElementById('batchOpt3'); if (b3) b3.textContent = t('batch_step3', b3.textContent);
+      const b4 = document.getElementById('batchOpt4'); if (b4) b4.textContent = t('batch_step4', b4.textContent);
+      const b5 = document.getElementById('batchOpt5'); if (b5) b5.textContent = t('batch_step5', b5.textContent);
+      const optReg = document.getElementById('optRegionUS'); if (optReg) optReg.textContent = t('opt_region_us', optReg.textContent);
+      const optPln = document.getElementById('optPlanZero'); if (optPln) optPln.textContent = t('opt_plan_zero', optPln.textContent);
+      const prxHint = document.getElementById('proxyTestResult'); if (prxHint) prxHint.textContent = t('proxy_default_hint', prxHint.textContent);
+      const prxInp = document.getElementById('cfgProxyTemplate'); if (prxInp) prxInp.placeholder = t('proxy_placeholder', prxInp.placeholder);
+      const impInp = document.getElementById('importText'); if (impInp) impInp.placeholder = t('import_placeholder', impInp.placeholder);
     }
   </script>
 </body>
