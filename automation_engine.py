@@ -727,6 +727,59 @@ class GoogleUltraAutomator:
                 self.log("ℹ️ Detected new device security block page, skipping independent verification page...")
                 return
 
+            # Detect phone number confirmation challenge (Number Matching)
+            is_phone_challenge = (
+                "challenge/dp" in page_obj.url
+                or "challenge/az" in page_obj.url
+                or "challenge/pk" in page_obj.url
+                or any(k in body for k in (
+                    "Check your phone", "Periksa ponsel Anda", "Buka ponsel Anda",
+                    "Tap the number", "Ketuk angka", "Tunjukkan nomor",
+                    "Google sent a notification", "Google mengirimkan notifikasi"
+                ))
+            )
+            if is_phone_challenge:
+                num_match = None
+                try:
+                    num_match = await page_obj.evaluate("""() => {
+                        const targets = Array.from(document.querySelectorAll("[data-number]"));
+                        for (const el of targets) {
+                            const numAttr = el.getAttribute("data-number");
+                            if (numAttr && /^\\d{1,3}$/.test(numAttr.trim())) return numAttr.trim();
+                        }
+                        const bEls = Array.from(document.querySelectorAll("div, span, b, strong, h2, h1"));
+                        for (const el of bEls) {
+                            const txt = (el.innerText || "").trim();
+                            if (/^\\d{1,3}$/.test(txt)) {
+                                const style = window.getComputedStyle(el);
+                                const fSize = parseFloat(style.fontSize) || 0;
+                                if (fSize >= 20 || el.tagName === "B" || el.tagName === "STRONG") {
+                                    return txt;
+                                }
+                            }
+                        }
+                        return null;
+                    }""")
+                except Exception:
+                    pass
+
+                if num_match:
+                    notify_msg = f"📱 [ACTION NEEDED] Tap number [{num_match}] on your phone / Ketuk angka [{num_match}] di HP Anda"
+                    self.log(f"🚨 {notify_msg}")
+                    self.update_state(status="waiting_human", step_message=notify_msg)
+                    for _ in range(40):
+                        self.check_stop()
+                        await asyncio.sleep(1.5)
+                        try:
+                            curr_url = page_obj.url
+                            if "challenge" not in curr_url and ("one.google.com" in curr_url or "myaccount.google.com" in curr_url or curr_url == "about:blank"):
+                                self.log("✅ Phone notification verified on mobile device!")
+                                self.update_state(status="running", step_message="Phone confirmation verified!")
+                                break
+                        except Exception:
+                            break
+                    continue
+
             totp = page_obj.locator('input[type="tel"], input#totpPin, input[name="totpPin"]')
             if await totp.count() > 0 and await totp.first.is_visible():
                 code = await self.ensure_totp_fresh()
@@ -758,7 +811,7 @@ class GoogleUltraAutomator:
 
         await self.safe_goto(
             page,
-            "https://accounts.google.com/ServiceLogin?hl=zh-CN&continue=https%3A%2F%2Fone.google.com%2Fplans%3Fhl%3Dzh-CN",
+            "https://accounts.google.com/ServiceLogin?hl=en&continue=https%3A%2F%2Fone.google.com%2Fplans%3Fhl%3Den",
             timeout=40000,
         )
         await asyncio.sleep(3.5)
@@ -840,7 +893,7 @@ class GoogleUltraAutomator:
                 self.log("⚠️ Login page responding slowly, retrying login flow...")
                 await self.safe_goto(
                     page,
-                    "https://accounts.google.com/ServiceLogin?hl=zh-CN&continue=https%3A%2F%2Fone.google.com%2Fplans%3Fhl%3Dzh-CN",
+                    "https://accounts.google.com/ServiceLogin?hl=en&continue=https%3A%2F%2Fone.google.com%2Fplans%3Fhl%3Den",
                     timeout=40000,
                 )
                 await asyncio.sleep(3.5)
